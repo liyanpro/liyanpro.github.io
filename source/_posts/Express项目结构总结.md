@@ -1,7 +1,10 @@
 ---
 title: Express项目结构总结
 date: 2018-06-18 22:19:37
-tags:
+header-img: img/post-bg.jpg
+tags: 
+    - node
+    - 总结
 ---
 ![](https://upload-images.jianshu.io/upload_images/4367237-3acf6f265b59daa8.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 

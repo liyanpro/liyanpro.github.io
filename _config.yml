@@ -5,24 +5,24 @@
 # Site
 title: liyan # your blog title name
 subtitle:  
-author: liyan # 作者
+author: 李岩 # 作者
 language: 
 timezone: 
 
 # custom Site settings
 # more detail check out docs
-SEOTitle: Liyans blog 
-header-img: 
+SEOTitle: Liyan‘s blog 
+header-img: /img/li.jpg
 email: 
 description: "李岩的博客"
-keyword: # seo key words
+keyword: "李岩，博客，liyan,liyanpro"  # seo key words
 
-favicon: # your favicon png
+favicon: # yourfavicon"" png
 # custom end
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: http://liyanpro.github.io
+url: https://liyan.cloud
 root: /
 permalink: :year/:month/:day/:title/
 permalink_defaults:
@@ -69,8 +69,9 @@ ga_track_id:             # Format: UA-xxxxxx-xx
 ga_domain:
 
 # Sidebar settings
-sidebar-about-description: # 个人描述
-sidebar-avatar:     # use absolute URL
+sidebar: true
+sidebar-about-description: 莫道儒冠误此生，从来诗书不负人　
+sidebar-avatar: /img/li.jpg   #use absolute URL
 
 
 # Featured Tags
@@ -156,7 +157,7 @@ clip-avatar: "?imageView2/2/w/300/h/300/interlace/1/q/90"
 clip-home-post-bg: "?imageView2/1/w/800/h/300/interlace/1/q/70"
 
 # post default images
-post-default-img: #博文默认的图片
+post-default-img: /img/post-bg.jpg #博文默认的图片
 post-default-img-mobile: #移动端显示的图片
 
 # search api , set your custom key
