@@ -1,18 +1,17 @@
 ---
 title: Express项目结构总结
 date: 2018-06-18 22:19:37
-header-img: img/post-bg.jpg
+header-img: https://bucketyy.oss-cn-beijing.aliyuncs.com/image/post-bg-2015.jpg
 tags: 
-    - node
-    - 总结
+     - node
+     - 总结
 ---
-![](https://upload-images.jianshu.io/upload_images/4367237-3acf6f265b59daa8.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 
-站酷建站的后台管理系统是基于node.js平台的Express框架构成，这是一个极简、灵活的 web 应用开发框架，说白了就是完全由路由和中间件组成的web框架，一个express应用就是在调用各种中间件。
+ 站酷建站的后台管理系统是基于node.js平台的Express框架构成，这是一个极简、灵活的 web 应用开发框架，说白了就是完全由路由和中间件组成的web框架，一个express应用就是在调用各种中间件。
 
-###项目结构
-![建站后台目录结构图](https://upload-images.jianshu.io/upload_images/4367237-56f99d1967d30dc1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+### 项目结构
+![建站后台目录结构图](https://bucketyy.oss-cn-beijing.aliyuncs.com/image/jzml.png)
 bin：存放项目启动的执行文件
 config：项目的配置文件，json格式，对应开发、测试到正式环境的配置文件各一份，内容包括环境名称、redis、es、mysql、上传的oss-path、域名等信息。
 node_modules：项目需要依赖的模块，在该目录下执行npm install安装项目需要的模块。
@@ -22,8 +21,7 @@ views：视图文件，相当于mvc中的view。
 package.json：项目的依赖配置与版本信息
 zdiy.js：默认的名称为app.js，应用的核心配置文件，加载初始化依赖模块，应用的入口。
 
-###集成权限认证中间件Passport
-
+### 集成权限认证中间件
 权限认证几乎是任何系统都存在的很重要的模块，也是实现比较繁琐和复杂的，在java中有Apache的Shiro和SpringSecurity等权限认证框架，node.js中自然用到passport。安装好passport后，在routes目录中创建passport.js文件，对passport进行配置。
 * 策略
 Passport使用所谓的策略来验证请求。策略包括验证用户名和密码，使用[OAuth](http://oauth.net/)委派身份验证或使用[OpenID的](http://openid.net/)联合身份验证。
@@ -111,7 +109,7 @@ Passport使用所谓的策略来验证请求。策略包括验证用户名和密
 	        });
         });
 参考<http://www.passportjs.org/>
-###功能开发实例
+### 功能开发实例
 模版审核功能
 * 添加view
 新建template.ejs文件，编写html内容。

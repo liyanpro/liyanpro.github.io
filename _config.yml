@@ -12,7 +12,7 @@ timezone:
 # custom Site settings
 # more detail check out docs
 SEOTitle: Liyan‘s blog 
-header-img: /img/li.jpg
+header-img:
 email: 
 description: "李岩的博客"
 keyword: "李岩，博客，liyan,liyanpro"  # seo key words
@@ -158,7 +158,7 @@ clip-home-post-bg: "?imageView2/1/w/800/h/300/interlace/1/q/70"
 
 # post default images
 post-default-img: /img/post-bg.jpg #博文默认的图片
-post-default-img-mobile: #移动端显示的图片
+post-default-img-mobile: /img/post-bg.jpg #移动端显示的图片
 
 # search api , set your custom key
 swiftype_key: 
