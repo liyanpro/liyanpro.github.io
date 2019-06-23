@@ -28,20 +28,21 @@ permalink: :year/:month/:day/:title/
 permalink_defaults:
 
 # SNS settings
-# RSS:
-weibo_username: 
+RSS: false
+weibo_username: LeeYanXJ
 zhihu_username: 
-github_username: 
+github_username: liyanpro
 twitter_username: 
 facebook_username:  
-linkedin_username:  
+linkedin_username:  岩-李-1a5955189
 
 # Build settings
 anchorjs: false                        # if you want to customize anchor. check out line:181 of `post.html`
 
 
 # Disqus settings 
-disqus_username: 
+disqus_username: liyanpro
+
 
 # Duoshuo settings
 duoshuo_username:  # 你的多说帐号
@@ -49,7 +50,8 @@ duoshuo_username:  # 你的多说帐号
 duoshuo_share: true                     # set to false if you want to use Comment without Sharing
 
 # Use livere
-use_livere:
+use_livere: true
+livere_uid: liyanpro
 
 # Valine comment system https://valine.js.org
 valine: 
