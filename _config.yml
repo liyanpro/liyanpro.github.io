@@ -17,7 +17,7 @@ email:
 description: "李岩的博客"
 keyword: "李岩，博客，liyan,liyanpro"  # seo key words
 
-favicon: # yourfavicon"" png
+favicon:  /img/bea.ico # yourfavicon"" png
 # custom end
 
 # URL
@@ -41,7 +41,7 @@ anchorjs: false                        # if you want to customize anchor. check 
 
 
 # Disqus settings 
-disqus_username: liyanpro
+disqus_username: 
 
 
 # Duoshuo settings
