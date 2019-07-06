@@ -87,11 +87,13 @@ friends:  # 友链
 source_dir: source
 public_dir: public
 tag_dir: tags
+mylove_dir: mylove
 archive_dir: archives
 category_dir: categories
 code_dir: downloads/code
 i18n_dir: :lang
 skip_render:
+
 
 # Writing
 new_post_name: :title.md # File name of new posts
