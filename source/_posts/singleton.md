@@ -1,5 +1,5 @@
 ---
-title: 设计模式学习笔记之——单例模式
+title: 设计模式之—单例模式
 date: 2017-11-16 22:43:21
 header-img: https://bucketyy.oss-cn-beijing.aliyuncs.com/image/home-bg.jpg
 tags:
@@ -13,8 +13,8 @@ Singleton Pattern主要解决一个全局变量频繁的被创建和销毁。
 
 #### 使用场景
  * web计数器，每次加数不用保存到数据库，可以先用单例缓存起来
-* 创建的一个对象需要消耗的资源过多，比如I/O，数据库连接等
-  
+ * 创建的一个对象需要消耗的资源过多，比如I/O，数据库连接等
+ * spring中的依赖注入 
 步骤一：创建一个Singleton类  SingletonObject.java
 
        public class SingletonObject{
@@ -38,3 +38,58 @@ Singleton Pattern主要解决一个全局变量频繁的被创建和销毁。
         SingleObject instance = SingleObject.getInstance();
         instance.show();
     }
+    
+上面属于懒汉式线程不安全，安全的懒汉式如下：
+        
+        public class Singleton{
+           private static Singleton instance;
+           private Singleton(){}
+           public static synchronized Singleton getInstance(){
+                if(instance==null){
+                   instance=new Singleton();
+                }
+                return instance;
+           }
+        
+        }
+        
+饿汉式属于线程安全模式，但容易产生垃圾对象
+
+         public class Singleton{
+                private static Singleton instance=new Singleton;
+                private Singleton(){}
+                public static Singleton getInstance(){
+                      return instance;
+                }
+                
+         }     
+                
+双重校验锁模式，结合了volatile关键字，使作用的变量处于线程共享变量，安全且在多线程情况下能保持高性能
+        
+        public class Singleton{
+               private volatile static Singleton instance;
+               private Singleton(){}
+               public static Singleton getInstance(){
+                   if(instance==null){
+                      synchronized(Singleton.class){
+                           if(instance==null){
+                              instance=new Singleton();
+                           }
+                      }
+                   }
+                  return instance;
+               }
+                        
+        } 
+静态内部类模式，这种方式同样利用了 classloader 机制来保证初始化 instance 时只有一个线程，与饿汉式不同的是，这种采用的是延迟初始化，并不是在 Singleton被装载时就初始化 Singleton 实例，而是当 getInstance() 方法被调用时才装载 SingletonHolder类
+
+        public class Singleton{
+               private static class SingletonHolder{
+                 private static final Singleton INSTANCE=new Singleton();
+               }
+               private Singleton(){}
+               public static Singleton getInstance(){
+                      return SingletonHolder.INSTANCE;
+               }
+                       
+        }         
