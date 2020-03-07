@@ -1,6 +1,7 @@
 ---
 title: Redis数据结构及内存占比分析
 date: 2020-03-07 10:37:08
+header-img: https://bucketyy.oss-cn-beijing.aliyuncs.com/image/article/redis-cache-1.png
 tags:
      - redis
      - 数据结构
