@@ -39,6 +39,7 @@ DockerFile文件
 
 
 ###5. 上传到远程仓库
+
    #### 1）使用前在本地Docker服务中配置Docker Registry，重启服务
     {
     "experimental": false,
@@ -50,16 +51,16 @@ DockerFile文件
      "insecure-registries": ["ip"]
     }
 
-   ####2）登录镜像仓库
+   #### 2）登录镜像仓库
    
     docker login --username=liyan  ip
 
-   ####3) 推送镜像
+   #### 3) 推送镜像
    
     docker tag ImageId ip/path/ImagesName:ImageTag
     docker push ip/path/ImagesName:ImageTag
 
-   ####4) 拉取镜像
+   #### 4) 拉取镜像
    
     docker pull ip/path/ImagesName:ImageTag
 
