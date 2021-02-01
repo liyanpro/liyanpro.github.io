@@ -18,11 +18,11 @@
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
     <title>
         
-        西藏之旅｜Liyan‘s blog
+        docker命令｜Liyan‘s blog
         
     </title>
 
-    <link rel="canonical" href="https://liyan.cloud/2019/11/04/tibet/">
+    <link rel="canonical" href="https://liyan.cloud/2021/02/01/docker命令/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -128,13 +128,13 @@
 
 
 <img class="wechat-title-img"
-     src="nullhttps://bucketyy.oss-cn-beijing.aliyuncs.com/image/tibet/tibet-1.jpeg">
+     src="/img/post-bg.jpg">
 
 
 <style>
     
     header.intro-header {
-        background-image: url('https://bucketyy.oss-cn-beijing.aliyuncs.com/image/tibet/tibet-1.jpeg?imageView2/1/w/1400/h/400/interlace/1/q/90')
+        background-image: url('/img/post-bg.jpg')
     }
 
     
@@ -145,21 +145,15 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
                 <div class="post-heading">
-                    <h1>西藏之旅</h1>
+                    <h1>docker命令</h1>
                     
                     <span class="meta">
                          作者 李岩
                         <span>
-                          日期 2019-11-04
+                          日期 2021-02-01
                          </span>
                     </span>
                     <div class="tags text-center">
-                        
-                        <a class="tag" href="/tags/#旅游"
-                           title="旅游">旅游</a>
-                        
-                        <a class="tag" href="/tags/#西藏"
-                           title="西藏">西藏</a>
                         
                     </div>
                 </div>
@@ -168,7 +162,7 @@
     </div>
     <div class="post-title-haojen">
         <span>
-            西藏之旅
+            docker命令
         </span>
     </div>
 </header>
@@ -179,23 +173,50 @@
         <div class="row">
             <!-- Post Container -->
             <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
-                <p>2019.10.21，西安飞西宁，晚上坐上去西藏的火车，一场说走就走的旅行就此开始。</p>
-<h3 id="拉萨"><a href="#拉萨" class="headerlink" title="拉萨"></a>拉萨</h3><p><img src="https://bucketyy.oss-cn-beijing.aliyuncs.com/image/tibet/IMG_DZS.jpg" alt><br><img src="https://bucketyy.oss-cn-beijing.aliyuncs.com/image/tibet/IMG_BDLG_4.jpg" alt><br><img src="https://bucketyy.oss-cn-beijing.aliyuncs.com/image/tibet/IMG_BDLG_3.JPG" alt><br><img src="https://bucketyy.oss-cn-beijing.aliyuncs.com/image/tibet/IMG_BDLG_2.jpg" alt></p>
-
+                <h3 id="1-通过DockFile构建镜像"><a href="#1-通过DockFile构建镜像" class="headerlink" title="1.通过DockFile构建镜像"></a>1.通过DockFile构建镜像</h3><p>DockerFile文件</p>
+<pre><code>FROM openjdk:8
+MAINTAINER liyan &lt;liy616@chinaunicom.cn&gt;
+COPY monitor-1.0.0.jar /opt
+WORKDIR /opt
+CMD java -jar  -Xmx2G -Xms1G  /opt/monitor-1.0.0.jar</code></pre><p> dockerfile文件详解</p>
+<h3 id="2-本地构建镜像"><a href="#2-本地构建镜像" class="headerlink" title="2. 本地构建镜像"></a>2. 本地构建镜像</h3><p>进入dockerfile层级目录</p>
+<pre><code>docker build -t imageName:tag .
+docker build  -f Dockerfile.hub -t  ant-design-pro ./</code></pre><p>###3. 本地启动镜像</p>
+<ul>
+<li><p>-d: 后台运行容器，并返回容器ID；</p>
+</li>
+<li><p>-p: 指定端口映射，格式为：主机(宿主)端口:容器端口</p>
+</li>
+<li><p>–name=”nginx-lb”: 为容器指定一个名称；</p>
+<p>docker run -d -p  主机端口:容器端口  –name NewContainerName  imageName:tag</p>
+<p>在容器中开启交互终端</p>
+<p>docker exec -i -t container_id /bin/bash</p>
+</li>
+</ul>
+<p>###4  保存镜像到本地</p>
+<pre><code>docker save -o filename.tar imageName:tag</code></pre><p>###5. 上传到远程仓库</p>
+<h4 id="1）使用前在本地Docker服务中配置Docker-Registry，重启服务"><a href="#1）使用前在本地Docker服务中配置Docker-Registry，重启服务" class="headerlink" title="1）使用前在本地Docker服务中配置Docker Registry，重启服务"></a>1）使用前在本地Docker服务中配置Docker Registry，重启服务</h4><pre><code>{
+&quot;experimental&quot;: false,
+&quot;debug&quot;: true,
+&quot;registry-mirrors&quot;: [
+  &quot;https://eodtyohs.mirror.aliyuncs.com&quot;,
+   &quot;https://reg-mirror.qiniu.com&quot;
+ ],
+ &quot;insecure-registries&quot;: [&quot;ip&quot;]
+}</code></pre><p>   ####2）登录镜像仓库</p>
+<pre><code>docker login --username=liyan  ip</code></pre><p>   ####3) 推送镜像</p>
+<pre><code>docker tag ImageId ip/path/ImagesName:ImageTag
+docker push ip/path/ImagesName:ImageTag</code></pre><p>   ####4) 拉取镜像</p>
+<pre><code>docker pull ip/path/ImagesName:ImageTag</code></pre>
                 <hr>
                 
 
                 <ul class="pager">
                     
-                    <li class="previous">
-                        <a href="/2019/11/17/proxy/" data-toggle="tooltip" data-placement="top"
-                           title="设计模式之代理模式">&larr; Previous Post</a>
-                    </li>
-                    
                     
                     <li class="next">
-                        <a href="/2019/08/15/dubbo生态之nacos注册中心/" data-toggle="tooltip" data-placement="top"
-                           title="dubbo生态之nacos注册中心">Next Post &rarr;</a>
+                        <a href="/2020/10/12/Web-Security/" data-toggle="tooltip" data-placement="top"
+                           title="Web Security ">Next Post &rarr;</a>
                     </li>
                     
                 </ul>
@@ -233,7 +254,7 @@
 
             <div class="hidden-xs col-sm-3 toc-col">
                 <div class="toc-wrap">
-                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#拉萨"><span class="toc-text">拉萨</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-通过DockFile构建镜像"><span class="toc-text">1.通过DockFile构建镜像</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-本地构建镜像"><span class="toc-text">2. 本地构建镜像</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1）使用前在本地Docker服务中配置Docker-Registry，重启服务"><span class="toc-text">1）使用前在本地Docker服务中配置Docker Registry，重启服务</span></a></li></ol></li></ol>
                 </div>
             </div>
         </div>
@@ -254,12 +275,6 @@
                         <a href="/tags/">FEATURED TAGS</a>
                     </h5>
                     <div class="tags">
-                        
-                        <a class="tag" href="/tags/#旅游"
-                           title="旅游">旅游</a>
-                        
-                        <a class="tag" href="/tags/#西藏"
-                           title="西藏">西藏</a>
                         
                     </div>
                 </section>
