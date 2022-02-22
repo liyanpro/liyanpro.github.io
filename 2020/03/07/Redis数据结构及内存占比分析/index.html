@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="李岩的博客">
+    <meta name="keyword" content="李岩，博客，liyan,liyanpro">
+    <meta name="theme-color" content="#600090">
+    <meta name="msapplication-navbutton-color" content="#600090">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#600090">
+    <link rel="shortcut icon" href="/img/bea.ico">
+    <link rel="alternate" type="application/atom+xml" title="liyan" href="/atom.xml">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
+    <title>
+        
+        Redis数据结构及内存占比分析｜Liyan‘s blog
+        
+    </title>
+
+    <link rel="canonical" href="https://liyan.cloud/2020/03/07/Redis数据结构及内存占比分析/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/blog-style.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+</head>
+
+<style>
+
+    header.intro-header {
+        background-image: url('')
+    }
+</style>
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="" class="animated fadeIn">
+<!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top " id="nav-top" data-ispost = "true" data-istags="false
+" data-ishome = "false" >
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand animated pulse" href="/">
+                <span class="brand-logo">
+                    liyan
+                </span>
+                's Blog
+            </a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <!-- /.navbar-collapse -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+					
+                    
+                        
+							
+                        <li>
+                            <a href="/tags/">tags</a>
+                        </li>
+							
+						
+                    
+					
+					
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+//    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+<!-- Main Content -->
+
+<!--only post-->
+
+
+<img class="wechat-title-img"
+     src="nullhttps://bucketyy.oss-cn-beijing.aliyuncs.com/image/article/redis-cache-1.png">
+
+
+<style>
+    
+    header.intro-header {
+        background-image: url('https://bucketyy.oss-cn-beijing.aliyuncs.com/image/article/redis-cache-1.png?imageView2/1/w/1400/h/400/interlace/1/q/90')
+    }
+
+    
+</style>
+
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <div class="post-heading">
+                    <h1>Redis数据结构及内存占比分析</h1>
+                    
+                    <span class="meta">
+                         作者 李岩
+                        <span>
+                          日期 2020-03-07
+                         </span>
+                    </span>
+                    <div class="tags text-center">
+                        
+                        <a class="tag" href="/tags/#redis"
+                           title="redis">redis</a>
+                        
+                        <a class="tag" href="/tags/#数据结构"
+                           title="数据结构">数据结构</a>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="post-title-haojen">
+        <span>
+            Redis数据结构及内存占比分析
+        </span>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Container -->
+            <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
+                <h3 id="Redis数据结构存储实验"><a href="#Redis数据结构存储实验" class="headerlink" title="Redis数据结构存储实验"></a>Redis数据结构存储实验</h3><p>Redis常用的有五大数据结构，包括String、List、Hash、Set、SortSet，那么存入相同大小的数据，这些数据结构所占的内存大小都是多少呢？下面做个实验，看看这些不同数据结构存储同样的100W数据，所占用的内存及查询时间。这里的100W数据指的是key和value总和，数据均采用32位UUID，Hash的field和SortSet的score使用一到两位字符存储，占有内存忽略不计。<br>思路： 依次往各数据结构添加100W数据，选第10000个key作为查询key，添加完成后使用redis的 info‘memory’命令查看内存占用情况，计算查询key的检索时间，以纳秒为单位，完成统计后使用flushAll命令清空库，再进行一下个数据结构统计，实验结果如下：</p>
+<ol>
+<li>String结构<br>占用内存：73.63M，查询key时长：130961 ns<br><img src="https://bucketyy.oss-cn-beijing.aliyuncs.com/image/article/redis-string.png" alt></li>
+<li>List结构<br>占用内存：37.48M，查询key时长：80195 ns（通过pop命令出队）<br><img src="https://bucketyy.oss-cn-beijing.aliyuncs.com/image/article/redis-list.png" alt></li>
+<li>Hash结构<br>占用内存：41.11M，查询key时长：77621 ns<br><img src="https://bucketyy.oss-cn-beijing.aliyuncs.com/image/article/redis-hash.png" alt></li>
+<li>Set结构<br>占用内存：93.10M，查询key时长：5495122 ns（通过 smembers命令获取key集合全部成员）<br><img src="https://bucketyy.oss-cn-beijing.aliyuncs.com/image/article/redis-set.png" alt></li>
+<li>SortSet结构<br>占用内存：41.11M，查询key时长：228546 ns（通过zrange命令获取key有序集合成员）<br><img src="https://bucketyy.oss-cn-beijing.aliyuncs.com/image/article/redis-sortset.png" alt></li>
+</ol>
+<h4 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h4><p>Key-Value结构查询速度更快，时间复杂度为O(1)，但会消耗更多内存，相比之下，Hash更优于Set、String结构，如果单纯的存储和查询，不做集合、排序处理，优先选择Hash结构。List不适合做检索，SortSet为有序集合，采用skiplist结构，检索速度比哈希略慢。</p>
+<h3 id="Redis数据结构分析"><a href="#Redis数据结构分析" class="headerlink" title="Redis数据结构分析"></a>Redis数据结构分析</h3><p>Redis各数据结构实现原理，如下图：<br><img src="https://bucketyy.oss-cn-beijing.aliyuncs.com/image/article/redis-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84.png" alt></p>
+<ul>
+<li>动态字符串SDS<br>Redis 是用 C 语言写的，但是对于Redis的字符串，却不是 C 语言中的字符串，它是自己构建了一种名为简单动态字符串（simple dynamic string,SDS）的抽象类型，并将 SDS 作为 Redis的默认字符串表示，它的特点就是预先分配内存，记录字符串长度，在原字符串数组buf[]中新增一串字符串。优点就是当清空时，并没有真正释放内存，而是将长度字段len值为0，当再次使用时，避免重新分配内存，从而提高效率。<br><img src="https://bucketyy.oss-cn-beijing.aliyuncs.com/image/article/redis-sources.png" alt></li>
+<li>压缩列表ziplist<br>ziplist是列表键和哈希键的底层实现之一。是由一系列特殊编码的连续内存块组成，当一个列表键只包含少量列表项并且每个都是小整数值或者长度比较短的字符串时，Redis就采用压缩列表做底层实现，这个值可以在redis.conf文件中进行修改，下图是Hash结构的配置，hash-max-ziplist-entries表示键值对个数， hash-max-ziplist-value字节数，（默认是64，我这边做了修改）满足这两点hash就使用ziplist存储数据，超过后重构为hashtable。同理，还可对SortSet结构设置zset-max-ziplist-entries和zset-max-ziplist-value来使用ziplist，当不满足后重构为skiplist（字典和跳跃表结构）<br><img src="https://bucketyy.oss-cn-beijing.aliyuncs.com/image/article/redis-config.png" alt></li>
+<li>字典<br>Redis的字典dict使用哈希表实现，关于哈希表，可以参考java中hashmap实现原理，采用数组+链表方式，其中dictht就是哈希表结构。<br><img src="https://bucketyy.oss-cn-beijing.aliyuncs.com/image/article/redis-sources1.png" alt><br><img src="https://bucketyy.oss-cn-beijing.aliyuncs.com/image/article/redis-sources2.png" alt></li>
+<li>跳跃表<br>跳跃表原理较复杂点，它的存在是牺牲一点存储空间使查询元素更接近O(logn)。下图是参考网上对跳跃表的解释，header 和 tail 指针分别指向跳跃表的表头和表尾节点，通过这两个指针，程序定位表头节点和表尾节点的复杂度为 O(1) 。通过使用 length 属性来记录节点的数量， 程序可以在 O(1) 复杂度内返回跳跃表的长度。level 属性则用于在 O(1) 复杂度内获取跳跃表中层高最大的那个节点的层数。<a href="http://redisbook.com/preview/skiplist/datastruct.html" target="_blank" rel="noopener">参考redis设计与分析</a><br><img src="https://bucketyy.oss-cn-beijing.aliyuncs.com/image/article/redis-simple.png" alt><br><img src="https://bucketyy.oss-cn-beijing.aliyuncs.com/image/article/redis-simple2.png" alt></li>
+</ul>
+<p>如上图中，左侧L5层高为3，所在表中位置为5，所以level为5</p>
+<p><img src="https://bucketyy.oss-cn-beijing.aliyuncs.com/image/article/redis-sources3.png" alt></p>
+<p><a href="https://github.com/antirez/redis" target="_blank" rel="noopener">源码来源</a></p>
+<blockquote>
+<p>附 测试代码</p>
+</blockquote>
+<pre><code>public void analyzedRedisMemory() {
+
+    Jedis jedis = RedisClient.getInstance().getJedis();
+    try {
+        this.logger.info(&quot;========添加100W数据到 String 结构中=======&quot;);
+        String searchKey = &quot;&quot;;
+        for (int i = 0; i &lt; 500000; i++) {
+            if (i % 100000 == 0) {
+                System.out.println(&quot;已添加 &quot; + i * 2 + &quot; 条数据 &quot;);
+            }
+            String key = UUID.randomUUID().toString();
+            if (i == 10000) {
+                searchKey = key;
+            }
+            jedis.set(key, UUID.randomUUID().toString());
+        }
+        long begin = System.nanoTime();
+        jedis.get(searchKey);
+        this.logger.info(&quot;查询key所用时长：{}(ns)&quot;, (System.nanoTime() - begin));
+        this.logger.info(jedis.info(&quot;memory&quot;));
+        jedis.flushAll();
+        Thread.sleep(500);
+        this.logger.info(&quot;========添加100W数据到 List 结构中=======&quot;);
+        String listKey = UUID.randomUUID().toString();
+        for (int i = 0; i &lt; 1000000; i++) {
+            if (i % 100000 == 0) {
+                System.out.println(&quot;已添加 &quot; + i + &quot; 条数据 &quot;);
+            }
+            jedis.lpush(listKey, UUID.randomUUID().toString());
+        }
+        begin = System.nanoTime();
+        jedis.rpop(listKey);
+        this.logger.info(&quot;查询key所用时长：{}(ns)&quot;, (System.nanoTime() - begin));
+        this.logger.info(jedis.info(&quot;memory&quot;));
+        jedis.flushAll();
+        Thread.sleep(500);
+        this.logger.info(&quot;========添加100W数据到 Set 结构中=======&quot;);
+        String key1 = &quot;&quot;;
+        for (int i = 0; i &lt; 10000; i++) {
+            // 每个集合数量为99个值
+            key1 = UUID.randomUUID().toString();
+            if (i == 5000) {
+                searchKey = key1;
+            }
+            for (int j = 0; j &lt; 99; j++) {
+                jedis.sadd(key1, UUID.randomUUID().toString());
+            }
+            if (i % 1000 == 0) {
+                System.out.println(&quot;已添加 &quot; + i * 100 + &quot; 条数据 &quot;);
+            }
+        }
+        begin = System.nanoTime();
+        jedis.smembers(searchKey);
+        this.logger.info(&quot;查询key所用时长：{}(ns)&quot;, (System.nanoTime() - begin));
+        this.logger.info(jedis.info(&quot;memory&quot;));
+        jedis.flushAll();
+        Thread.sleep(500);
+        this.logger.info(&quot;========添加100W数据到 Hash 结构中=======&quot;);
+        String key2 = &quot;&quot;;
+        for (int i = 0; i &lt; 10000; i++) {
+            // 一个key有99个field
+            key2 = UUID.randomUUID().toString();
+            if (i == 5000) {
+                searchKey = key2;
+            }
+            for (int j = 0; j &lt; 99; j++) {
+                jedis.hset(key2, j + &quot;&quot;, UUID.randomUUID().toString());
+            }
+            if (i % 1000 == 0) {
+                System.out.println(&quot;已添加 &quot; + i * 100 + &quot; 条数据 &quot;);
+            }
+        }
+        begin = System.nanoTime();
+        jedis.hget(searchKey, 6 + &quot;&quot;);
+        this.logger.info(&quot;查询key所用时长：{}(ns)&quot;, (System.nanoTime() - begin));
+        this.logger.info(jedis.info(&quot;memory&quot;));
+        jedis.flushAll();
+        Thread.sleep(500);
+        this.logger.info(&quot;========添加100W数据到 SortSet 结构中=======&quot;);
+        String key3 = &quot;&quot;;
+        for (int i = 0; i &lt; 10000; i++) {
+            // 每个集合数量为99个值
+            key3 = UUID.randomUUID().toString();
+            if (i == 5000) {
+                searchKey = key3;
+            }
+            for (int j = 0; j &lt; 99; j++) {
+                jedis.zadd(key3, j, UUID.randomUUID().toString());
+            }
+            if (i % 1000 == 0) {
+                System.out.println(&quot;已添加 &quot; + i * 100 + &quot; 条数据 &quot;);
+            }
+        }
+        begin = System.nanoTime();
+        jedis.zrange(searchKey, 0, -1);
+        this.logger.info(&quot;查询key所用时长：{}(ns)&quot;, (System.nanoTime() - begin));
+        this.logger.info(jedis.info(&quot;memory&quot;));
+        jedis.flushAll();
+    } catch (Exception e) {
+        this.logger.error(&quot;执行错误&quot;, e);
+    } finally {
+        jedis.close();
+    }
+}</code></pre>
+                <hr>
+                
+
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2020/10/12/工程师的基本功是什么？该如何练习？/" data-toggle="tooltip" data-placement="top"
+                           title="工程师的基本功是什么？该如何练习？">&larr; Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/2020/02/22/IntelliJ-IDEA-For-Mac-快捷键/" data-toggle="tooltip" data-placement="top"
+                           title="IntelliJ IDEA For Mac 快捷键">Next Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+
+                
+
+
+                <!--加入新的评论系统-->
+                
+                <!-- 来必力City版安装代码 -->
+                <div id="lv-container" data-id="city" data-uid="liyanpro">
+                    <script type="text/javascript">
+                        (function(d, s) {
+                            var j, e = d.getElementsByTagName(s)[0];
+
+                            if (typeof LivereTower === 'function') { return; }
+
+                            j = d.createElement(s);
+                            j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+                            j.async = true;
+
+                            e.parentNode.insertBefore(j, e);
+                        })(document, 'script');
+                    </script>
+                    <noscript> 为正常使用来必力评论功能请激活JavaScript</noscript>
+                </div>
+                <!-- City版安装代码已完成 -->
+                
+
+                
+
+            </div>
+
+            <div class="hidden-xs col-sm-3 toc-col">
+                <div class="toc-wrap">
+                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Redis数据结构存储实验"><span class="toc-text">Redis数据结构存储实验</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#结论"><span class="toc-text">结论</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Redis数据结构分析"><span class="toc-text">Redis数据结构分析</span></a></li></ol>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5 class="text-center">
+                        <a href="/tags/">FEATURED TAGS</a>
+                    </h5>
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/#redis"
+                           title="redis">redis</a>
+                        
+                        <a class="tag" href="/tags/#数据结构"
+                           title="数据结构">数据结构</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+
+    </div>
+</article>
+
+
+
+
+
+
+
+<!-- Footer -->
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <br>
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+                    <li>
+                        <a target="_blank" href="http://weibo.com/LeeYanXJ">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/liyanpro">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://www.linkedin.com/in/岩-李-1a5955189">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; liyan 2022
+                    <br>
+                    <span id="busuanzi_container_site_pv" style="font-size: 12px;">PV: <span id="busuanzi_value_site_pv"></span> </span>
+                    <br>
+                </p>
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/blog.js"></script>
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://liyan.cloud/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- swiftype -->
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install','','2.0.0');
+</script>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<!--wechat title img-->
+<img class="wechat-title-img" src="/img/li.jpg">
+</body>
+
+</html>

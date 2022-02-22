@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="李岩的博客">
+    <meta name="keyword" content="李岩，博客，liyan,liyanpro">
+    <meta name="theme-color" content="#600090">
+    <meta name="msapplication-navbutton-color" content="#600090">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#600090">
+    <link rel="shortcut icon" href="/img/bea.ico">
+    <link rel="alternate" type="application/atom+xml" title="liyan" href="/atom.xml">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
+    <title>
+        
+        dubbo生态之nacos注册中心｜Liyan‘s blog
+        
+    </title>
+
+    <link rel="canonical" href="https://liyan.cloud/2019/08/15/dubbo生态之nacos注册中心/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/blog-style.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+</head>
+
+<style>
+
+    header.intro-header {
+        background-image: url('')
+    }
+</style>
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="" class="animated fadeIn">
+<!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top " id="nav-top" data-ispost = "true" data-istags="false
+" data-ishome = "false" >
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand animated pulse" href="/">
+                <span class="brand-logo">
+                    liyan
+                </span>
+                's Blog
+            </a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <!-- /.navbar-collapse -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+					
+                    
+                        
+							
+                        <li>
+                            <a href="/tags/">tags</a>
+                        </li>
+							
+						
+                    
+					
+					
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+//    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+<!-- Main Content -->
+
+<!--only post-->
+
+
+<img class="wechat-title-img"
+     src="nullhttps://bucketyy.oss-cn-beijing.aliyuncs.com/image/article/nacos.jpeg">
+
+
+<style>
+    
+    header.intro-header {
+        background-image: url('https://bucketyy.oss-cn-beijing.aliyuncs.com/image/article/nacos.jpeg?imageView2/1/w/1400/h/400/interlace/1/q/90')
+    }
+
+    
+</style>
+
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <div class="post-heading">
+                    <h1>dubbo生态之nacos注册中心</h1>
+                    
+                    <span class="meta">
+                         作者 李岩
+                        <span>
+                          日期 2019-08-15
+                         </span>
+                    </span>
+                    <div class="tags text-center">
+                        
+                        <a class="tag" href="/tags/#nacos"
+                           title="nacos">nacos</a>
+                        
+                        <a class="tag" href="/tags/#dubbo"
+                           title="dubbo">dubbo</a>
+                        
+                        <a class="tag" href="/tags/#注册中心"
+                           title="注册中心">注册中心</a>
+                        
+                        <a class="tag" href="/tags/#rpc"
+                           title="rpc">rpc</a>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="post-title-haojen">
+        <span>
+            dubbo生态之nacos注册中心
+        </span>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Container -->
+            <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
+                <blockquote>
+<p>Nacos 致力于微服务的发现、配置和管理，是现代应用结构的服务基础设施，Nacos 作为 Dubbo 生态系统中重要的注册中心实现，其中 dubbo-registry-nacos 则是 Dubbo 融合 Nacos 注册中心的实现</p>
+</blockquote>
+<h3 id="安装-Nacos-服务"><a href="#安装-Nacos-服务" class="headerlink" title="安装 Nacos 服务"></a>安装 Nacos 服务</h3><p>可以通过源码和发行包的方式安装</p>
+<ul>
+<li><p>发行包地址：<a href="https://github.com/alibaba/nacos/releases" target="_blank" rel="noopener">https://github.com/alibaba/nacos/releases</a></p>
+</li>
+<li><p>源码方式：从github 下载源码</p>
+<pre><code>git clone https://github.com/alibaba/nacos.git
+cd nacos/
+mvn -Prelease-nacos clean install -U  
+ls -al distribution/target/
+cd distribution/target/nacos-server-$version/nacos/bin</code></pre></li>
+</ul>
+<p>根据不通环境启动参数，linux/Mac os：sh startup.sh -m standalone   (standalone代表单机运行模式)</p>
+<p><img src="https://bucketyy.oss-cn-beijing.aliyuncs.com/image/article/nacos0.png" alt></p>
+<p>启动成功后，在浏览器输入：<a href="http://127.0.0.1:8848/nacos" target="_blank" rel="noopener">http://127.0.0.1:8848/nacos</a> 进入服务管理页面，如果使用Nacos 0.8.0以上版本，会出现登录页面，默认用户名密码都为：nacos</p>
+<p><img src="https://bucketyy.oss-cn-beijing.aliyuncs.com/image/article/nacos1.png" alt></p>
+<h3 id="创建应用实现服务生产-消费模型"><a href="#创建应用实现服务生产-消费模型" class="headerlink" title="创建应用实现服务生产-消费模型"></a>创建应用实现服务生产-消费模型</h3><p>首先创建一个springboot项目，在二级目录下创建三个子工程，目录结构如下：<br><img src="https://bucketyy.oss-cn-beijing.aliyuncs.com/image/article/nacos2.png" alt></p>
+<h4 id="引入依赖配置"><a href="#引入依赖配置" class="headerlink" title="引入依赖配置"></a>引入依赖配置</h4><pre><code>&lt;!-- Dubbo Nacos registry dependency --&gt;
+      &lt;dependency&gt;
+          &lt;groupId&gt;com.alibaba&lt;/groupId&gt;
+          &lt;artifactId&gt;dubbo-registry-nacos&lt;/artifactId&gt;
+          &lt;version&gt;0.0.1&lt;/version&gt;
+      &lt;/dependency&gt;
+
+      &lt;!-- Dubbo dependency --&gt;
+      &lt;dependency&gt;
+          &lt;groupId&gt;com.alibaba&lt;/groupId&gt;
+          &lt;artifactId&gt;dubbo&lt;/artifactId&gt;
+          &lt;version&gt;2.6.5&lt;/version&gt;
+      &lt;/dependency&gt;</code></pre><p>注意dubbo版本，2.7.0以上groupId属于apache了，引入 dubbo-registry-nacos 这个版本包会报错</p>
+<h4 id="定义服务接口"><a href="#定义服务接口" class="headerlink" title="定义服务接口"></a>定义服务接口</h4><p>dubbo-demo-api工程中定义服务接口：</p>
+<pre><code>package org.apache.dubbo.demo;
+
+    /**
+     * @author liyan
+     * @description
+     * @date 2019-08-09 16:44
+     */
+    public interface DemoService {
+
+        String sayHello(String name);
+    }</code></pre><h4 id="服务生产者实现接口"><a href="#服务生产者实现接口" class="headerlink" title="服务生产者实现接口"></a>服务生产者实现接口</h4><p>dubbo-demo-provider工程中实现：<br>DemoServiceImpl.java:</p>
+<pre><code>package org.apache.dubbo.demo.provider;
+import org.apache.dubbo.demo.DemoService;
+/**
+ * @author liyan
+ * @description
+ * @date 2019-08-09 16:47
+ */
+public class DemoServiceImpl implements DemoService{
+
+    @Override
+    public String sayHello(String name) {
+        return &quot;Hello &quot; + name;
+    }
+}</code></pre><p>dubbo通过spring的配置声明暴露服务（<a href="https://docs.spring.io/spring/docs/4.2.x/spring-framework-reference/html/xsd-configuration.html" target="_blank" rel="noopener">Spring Schema</a>）
+在resource/META-INF/spring目录下，创建 dubbo-demo-provider.xml 文件</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+    &lt;beans xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+           xmlns:dubbo=&quot;http://dubbo.apache.org/schema/dubbo&quot;
+           xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+           xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+           http://dubbo.apache.org/schema/dubbo http://dubbo.apache.org/schema/dubbo/dubbo.xsd&quot;&gt;
+
+        &lt;!-- 提供方应用信息，用于计算依赖关系 --&gt;
+        &lt;dubbo:application name=&quot;demo-provider&quot;/&gt;
+        &lt;!-- 使用 nacos 注册中心暴露服务地址 --&gt;
+        &lt;dubbo:registry address=&quot;nacos://127.0.0.1:8848&quot;/&gt;
+        &lt;!-- 用dubbo协议在20880端口暴露服务 --&gt;
+        &lt;dubbo:protocol name=&quot;dubbo&quot; port=&quot;20880&quot;/&gt;
+        &lt;!-- 声明需要暴露的服务接口 --&gt;
+        &lt;bean id=&quot;demoService&quot; class=&quot;org.apache.dubbo.demo.provider.DemoServiceImpl&quot;/&gt;
+         &lt;!-- 和本地bean一样实现服务 --&gt;
+        &lt;dubbo:service interface=&quot;org.apache.dubbo.demo.DemoService&quot; ref=&quot;demoService&quot;/&gt;
+    &lt;/beans&gt;</code></pre><h4 id="加载spring配置，启动生产服务"><a href="#加载spring配置，启动生产服务" class="headerlink" title="加载spring配置，启动生产服务"></a>加载spring配置，启动生产服务</h4><p> provider.java:</p>
+<pre><code>public class provider {
+
+     public static void main(String[] args) throws Exception {
+               System.setProperty(&quot;java.net.preferIPv4Stack&quot;, &quot;true&quot;);
+               ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(new String[]{&quot;META-INF/spring/dubbo-demo-provider.xml&quot;});
+               context.start();
+               System.out.println(&quot;Provider started.&quot;);
+               System.in.read(); // press any key to exit
+     }
+   }</code></pre><h4 id="服务消费者"><a href="#服务消费者" class="headerlink" title="服务消费者"></a>服务消费者</h4><p> dubbo-demo-consumer工程中，通过spring配置引用远程服务，在resource/META-INF/spring路径下，创建dubbo-demo-consumer.xml文件</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+      &lt;beans xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+             xmlns:dubbo=&quot;http://dubbo.apache.org/schema/dubbo&quot;
+             xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+             xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+             http://dubbo.apache.org/schema/dubbo http://dubbo.apache.org/schema/dubbo/dubbo.xsd&quot;&gt;
+
+          &lt;!-- consumer&apos;s application name, used for tracing dependency relationship (not a matching criterion),
+          don&apos;t set it same as provider --&gt;
+          &lt;dubbo:application name=&quot;demo-consumer&quot;/&gt;
+           &lt;!-- 使用 nacos 注册中心暴露发现服务地址 --&gt;
+          &lt;dubbo:registry address=&quot;nacos://127.0.0.1:8848&quot;/&gt;
+          &lt;!-- generate proxy for the remote service, then demoService can be used in the same way as the
+           &lt;!-- 生成远程服务代理，可以和本地bean一样使用demoService --&gt;
+          &lt;dubbo:reference id=&quot;demoService&quot; check=&quot;false&quot; interface=&quot;org.apache.dubbo.demo.DemoService&quot;/&gt;
+      &lt;/beans&gt;</code></pre><h4 id="加载spring配置，调用远程服务"><a href="#加载spring配置，调用远程服务" class="headerlink" title="加载spring配置，调用远程服务"></a>加载spring配置，调用远程服务</h4><p> 启动服务生产服务，创建 consumer.java 并执行:</p>
+<pre><code>public class consumer {
+
+       public static void main(String[] args) throws Exception {
+           ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(new String[] {&quot;META-INF/spring/dubbo-demo-consumer.xml&quot;});
+           context.start();
+           // Obtaining a remote service proxy
+           DemoService demoService = (DemoService)context.getBean(&quot;demoService&quot;);
+           // Executing remote methods
+           String hello = demoService.sayHello(&quot;world&quot;);
+           // Display the call result
+           System.out.println(hello);
+       }
+   }</code></pre><h4 id="nacos-管理页面监控"><a href="#nacos-管理页面监控" class="headerlink" title="nacos 管理页面监控"></a>nacos 管理页面监控</h4><p> 调用完成后，打开nacos 管理页面-服务列表,可以看到具体的服务及健康详情：<br> <img src="https://bucketyy.oss-cn-beijing.aliyuncs.com/image/article/nacos3.png" alt></p>
+
+                <hr>
+                
+
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2019/11/04/tibet/" data-toggle="tooltip" data-placement="top"
+                           title="西藏之旅">&larr; Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/2019/07/06/one-year/" data-toggle="tooltip" data-placement="top"
+                           title="One Year">Next Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+
+                
+
+
+                <!--加入新的评论系统-->
+                
+                <!-- 来必力City版安装代码 -->
+                <div id="lv-container" data-id="city" data-uid="liyanpro">
+                    <script type="text/javascript">
+                        (function(d, s) {
+                            var j, e = d.getElementsByTagName(s)[0];
+
+                            if (typeof LivereTower === 'function') { return; }
+
+                            j = d.createElement(s);
+                            j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+                            j.async = true;
+
+                            e.parentNode.insertBefore(j, e);
+                        })(document, 'script');
+                    </script>
+                    <noscript> 为正常使用来必力评论功能请激活JavaScript</noscript>
+                </div>
+                <!-- City版安装代码已完成 -->
+                
+
+                
+
+            </div>
+
+            <div class="hidden-xs col-sm-3 toc-col">
+                <div class="toc-wrap">
+                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装-Nacos-服务"><span class="toc-text">安装 Nacos 服务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#创建应用实现服务生产-消费模型"><span class="toc-text">创建应用实现服务生产-消费模型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#引入依赖配置"><span class="toc-text">引入依赖配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#定义服务接口"><span class="toc-text">定义服务接口</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#服务生产者实现接口"><span class="toc-text">服务生产者实现接口</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#加载spring配置，启动生产服务"><span class="toc-text">加载spring配置，启动生产服务</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#服务消费者"><span class="toc-text">服务消费者</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#加载spring配置，调用远程服务"><span class="toc-text">加载spring配置，调用远程服务</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nacos-管理页面监控"><span class="toc-text">nacos 管理页面监控</span></a></li></ol></li></ol>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5 class="text-center">
+                        <a href="/tags/">FEATURED TAGS</a>
+                    </h5>
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/#nacos"
+                           title="nacos">nacos</a>
+                        
+                        <a class="tag" href="/tags/#dubbo"
+                           title="dubbo">dubbo</a>
+                        
+                        <a class="tag" href="/tags/#注册中心"
+                           title="注册中心">注册中心</a>
+                        
+                        <a class="tag" href="/tags/#rpc"
+                           title="rpc">rpc</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+
+    </div>
+</article>
+
+
+
+
+
+
+
+<!-- Footer -->
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <br>
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+                    <li>
+                        <a target="_blank" href="http://weibo.com/LeeYanXJ">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/liyanpro">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://www.linkedin.com/in/岩-李-1a5955189">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; liyan 2022
+                    <br>
+                    <span id="busuanzi_container_site_pv" style="font-size: 12px;">PV: <span id="busuanzi_value_site_pv"></span> </span>
+                    <br>
+                </p>
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/blog.js"></script>
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://liyan.cloud/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- swiftype -->
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install','','2.0.0');
+</script>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<!--wechat title img-->
+<img class="wechat-title-img" src="/img/li.jpg">
+</body>
+
+</html>

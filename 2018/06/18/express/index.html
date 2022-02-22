@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="李岩的博客">
+    <meta name="keyword" content="李岩，博客，liyan,liyanpro">
+    <meta name="theme-color" content="#600090">
+    <meta name="msapplication-navbutton-color" content="#600090">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#600090">
+    <link rel="shortcut icon" href="/img/bea.ico">
+    <link rel="alternate" type="application/atom+xml" title="liyan" href="/atom.xml">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
+    <title>
+        
+        Express项目结构总结｜Liyan‘s blog
+        
+    </title>
+
+    <link rel="canonical" href="https://liyan.cloud/2018/06/18/express/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/blog-style.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+</head>
+
+<style>
+
+    header.intro-header {
+        background-image: url('')
+    }
+</style>
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="" class="animated fadeIn">
+<!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top " id="nav-top" data-ispost = "true" data-istags="false
+" data-ishome = "false" >
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand animated pulse" href="/">
+                <span class="brand-logo">
+                    liyan
+                </span>
+                's Blog
+            </a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <!-- /.navbar-collapse -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+					
+                    
+                        
+							
+                        <li>
+                            <a href="/tags/">tags</a>
+                        </li>
+							
+						
+                    
+					
+					
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+//    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+<!-- Main Content -->
+
+<!--only post-->
+
+
+<img class="wechat-title-img"
+     src="nullhttps://bucketyy.oss-cn-beijing.aliyuncs.com/image/post-bg-2015.jpg">
+
+
+<style>
+    
+    header.intro-header {
+        background-image: url('https://bucketyy.oss-cn-beijing.aliyuncs.com/image/post-bg-2015.jpg?imageView2/1/w/1400/h/400/interlace/1/q/90')
+    }
+
+    
+</style>
+
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <div class="post-heading">
+                    <h1>Express项目结构总结</h1>
+                    
+                    <span class="meta">
+                         作者 李岩
+                        <span>
+                          日期 2018-06-18
+                         </span>
+                    </span>
+                    <div class="tags text-center">
+                        
+                        <a class="tag" href="/tags/#node"
+                           title="node">node</a>
+                        
+                        <a class="tag" href="/tags/#总结"
+                           title="总结">总结</a>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="post-title-haojen">
+        <span>
+            Express项目结构总结
+        </span>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Container -->
+            <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
+                <p> 站酷建站的后台管理系统是基于node.js平台的Express框架构成，这是一个极简、灵活的 web 应用开发框架，说白了就是完全由路由和中间件组成的web框架，一个express应用就是在调用各种中间件。</p>
+<h3 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构"></a>项目结构</h3><p><img src="https://bucketyy.oss-cn-beijing.aliyuncs.com/image/jzml.png" alt="建站后台目录结构图"><br>bin：存放项目启动的执行文件<br>config：项目的配置文件，json格式，对应开发、测试到正式环境的配置文件各一份，内容包括环境名称、redis、es、mysql、上传的oss-path、域名等信息。<br>node_modules：项目需要依赖的模块，在该目录下执行npm install安装项目需要的模块。<br>public：静态资源文件夹<br>routes：路由文件，相当于mvc中的controller，默认创建的express项目包括index.js和user.js<br>views：视图文件，相当于mvc中的view。<br>package.json：项目的依赖配置与版本信息<br>zdiy.js：默认的名称为app.js，应用的核心配置文件，加载初始化依赖模块，应用的入口。</p>
+<h3 id="集成权限认证中间件"><a href="#集成权限认证中间件" class="headerlink" title="集成权限认证中间件"></a>集成权限认证中间件</h3><p>权限认证几乎是任何系统都存在的很重要的模块，也是实现比较繁琐和复杂的，在java中有Apache的Shiro和SpringSecurity等权限认证框架，node.js中自然用到passport。安装好passport后，在routes目录中创建passport.js文件，对passport进行配置。</p>
+<ul>
+<li><p>策略<br>Passport使用所谓的策略来验证请求。策略包括验证用户名和密码，使用<a href="http://oauth.net/" target="_blank" rel="noopener">OAuth</a>委派身份验证或使用<a href="http://openid.net/" target="_blank" rel="noopener">OpenID的</a>联合身份验证。<br>在要求Passport对请求进行身份验证之前，必须配置应用程序使用的策略。<br>策略及其配置通过该<code>use()</code>功能提供。例如，以下使用<code>LocalStrategy</code>本地认证策略用于用户名/密码认证，通过表单提交给应用程序，登录表单通过该POST方法提交给服务器，使用 authenticate()与local战略将处理登录请求。</p>
+<pre><code>var passport = require(&apos;passport&apos;);
+var LocalStrategy = require(&apos;passport-local&apos;).Strategy;
+var users = require(&apos;./users&apos;);
+
+passport.use(new LocalStrategy(function(username, password, cb) {
+  users.findByUsername(username, function(err, user) {
+  if (err) {
+    return cb(err);
+  }
+  if (!user) {
+    return cb(null, false, { message: &apos;用户名不存在.&apos; });
+  }
+  if (user.password != password) {
+    return cb(null, false, { message: &apos;密码错误.&apos; });
+  }
+  return cb(null, user);
+  });
+}));</code></pre><p>这里有一个重要的概念称为验证回拨，目的是查找拥有一组凭证的用户，当Passport验证请求时，它将解析请求中包含的凭证。然后在这种情况下username，使用这些凭证作为参数调用验证回调password。如果凭证有效，则验证回调会调用done以向Passport提供经过验证的用户。</p>
+<pre><code>return cb(null, user);</code></pre><p>如果凭证无效（例如，如果密码不正确），则done应该调用凭据 false而不是用户来指示验证失败。</p>
+<pre><code>return cb(null, false, { message: &apos;用户名不存在.&apos; });</code></pre><p>路由index.js中配置的登录请求</p>
+<pre><code>router.post(&apos;/login&apos;, function(req, res, next) {
+      passport.authenticate(&apos;local&apos;, function(err, user, info) {
+      if (err) {
+        return next(err);
+      }
+      if (!user) {
+          req.flash(&apos;errors&apos;, { msg:  info.message});
+          res.render(&apos;login&apos;, { title: &apos;登录&apos;, msg: info.message});
+          return;
+      }
+      if (req.body.remember) {
+          req.session.cookie.maxAge = 1000 * 60 * 3;
+      } else {
+          req.session.cookie.expires = false;
+      }
+      req.session.displayName = user.displayName;
+      req.session.level = user.level;
+      req.login(user, function(err) {
+      if (err) return next(err);
+        req.flash(&apos;success&apos;, { msg: &apos;登录成功！&apos; });
+        res.redirect(&apos;/web/index&apos;);
+    });
+ })(req, res, next);
+ });</code></pre></li>
+<li><p>中间件<br>在zdiy.js中需要配置passport中间件， <code>passport.initialize()</code> 用来初始化Passport。如果应用程序使用持久登录会话，则还必须使用<code>passport.session()</code>。启用会话支持完全是可选的，启用时，务必在<code>session()</code>之后使用。</p>
+<pre><code>app.use(session({
+  secret: &apos;thisxulz.com&apos;,
+  resave: true,
+  saveUninitialized: true
+} )); // session secret
+app.use(passport.initialize());
+app.use(passport.session());</code></pre></li>
+</ul>
+<ul>
+<li><p>会话<br>在web应用程序中，对用户进行身份验证的凭据仅在登录请求期间传输。如果验证成功，会话将通过用户浏览器中设置的cookie建立和维护。<br>每个后续请求将不会包含凭据，而是标识会话的唯一Cookie。为了支持登录会话，Passport将序列化user.id和退出会话的实例。</p>
+<pre><code>passport.serializeUser(function(user, cb) {
+  cb(null, user.id);
+});
+passport.deserializeUser(function(id, cb) {
+  users.findById(id, function(err, user) {
+    if (err) {
+      return cb(err);
+    }
+    cb(null, user);
+    });
+});</code></pre><p>参考<a href="http://www.passportjs.org/" target="_blank" rel="noopener">http://www.passportjs.org/</a></p>
+<h3 id="功能开发实例"><a href="#功能开发实例" class="headerlink" title="功能开发实例"></a>功能开发实例</h3><p>模版审核功能</p>
+</li>
+<li><p>添加view<br>新建template.ejs文件，编写html内容。</p>
+</li>
+<li><p>添加routes<br>添加页面的路由</p>
+<pre><code>router.get(&apos;/web/templates&apos;,isLoggedIn, function(req, res, next) {
+      if(req.session.level &gt;= 5 ){
+          res.render(&apos;templates&apos;, { title: &apos;模版管理&apos; ,displayName : 
+          req.session.displayName,imagePath:OSSPATH,env:env});
+      }else{
+          res.render(&apos;login&apos;, { title: &apos;登录&apos;, msg: &apos;您没有权限查看该模块，请 
+             联系管理员.&apos;});
+      }
+ });</code></pre><p>页面中调用的api也需要添加到路由</p>
+<pre><code>router.post(&apos;/api/getTemplates&apos;, isLoggedIn, function(req,res) {
+  zcoolDo.getTemplates(req,res);
+});</code></pre></li>
+<li><p>自定义模块zcool-do.js中添加后台接口的业务代码<br>包括业务逻辑处理，查询数据库操作并返回相应数据</p>
+<pre><code>zdoMysql.query(&apos;select count(*) as num&apos; + sql).then(function(total){
+  var start = (parseInt(req.body.pageNo) - 1) * 20;
+  sql += &apos; order by template.template_id desc limit &apos; + start + &apos;,20&apos;;
+  zdoMysql.query(&apos;select * &apos; + sql).then(function(rows){
+      if(rows &amp;&amp; rows.length &gt; 0){
+          res.send({
+              result : true,
+              total : total[0].num,
+              rows : rows
+          });
+      }else{
+          res.send({
+              result : false,
+              msg : &quot;没有数据&quot;
+          });
+      }
+  })
+}).catch(function(e){
+      logger.error(&quot;获取模版信息异常:&quot; + e);
+      res.send({
+      result : false,
+      msg : &quot;数据库查询异常&quot;
+  });
+});</code></pre><p>注意，由于node.js的异步机制，在处理循环中的事件时不能按照同步的逻辑来写。比如在一个定时任务中，需要按照查询的结果集给用户发送通知短信，可以使用回调的方式来达到同步的效果。</p>
+<pre><code>// 获取用户手机号码</code></pre><p>  request(DOMAIN+”/api/getUserInfo.do?userid=”+rows[i].user_id, function (error, response, body) {</p>
+<pre><code>  if (!error &amp;&amp; response.statusCode == 200) {    
+      var url = &quot;&quot;;//短信发送请求URL  
+      logger.info(&quot;用户电话：&quot;+response.body.phonenum+&quot; 发送内容：&quot;+content);    
+      request(url, function (err, response, body) {
+              if (err) {
+                  console.log(&quot;过期用户套餐通知短信发送失败&quot;);
+                  logger.error(&quot;过期用户套餐通知短信发送失败,phoneNum = &quot; + err.errPhone);
+              }
+              else{
+                  logger.info(&quot;用户id：&quot;+rows[i].user_id+&quot;的短信发送成功,模版id:&quot;+templateId);
+                  sendMsg(++i,rows,templateId,isExceed,date);
+              }
+            });
+  }else{
+      logger.info(&quot;获取用户手机号失败&quot;);
+      console.log(&quot;获取用户手机号失败&quot;);
+  }
+});</code></pre></li>
+</ul>
+<p>在给一个用户发送成功后回调当前函数sendMsg，在发送前判断i的值是否小于结果集的大小即可。</p>
+
+                <hr>
+                
+
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2019/06/24/taobao/" data-toggle="tooltip" data-placement="top"
+                           title="淘宝的架构演进之路">&larr; Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/2018/04/15/springboot_shiro/" data-toggle="tooltip" data-placement="top"
+                           title="SpringBoot集成Shiro权限管理">Next Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+
+                
+
+
+                <!--加入新的评论系统-->
+                
+                <!-- 来必力City版安装代码 -->
+                <div id="lv-container" data-id="city" data-uid="liyanpro">
+                    <script type="text/javascript">
+                        (function(d, s) {
+                            var j, e = d.getElementsByTagName(s)[0];
+
+                            if (typeof LivereTower === 'function') { return; }
+
+                            j = d.createElement(s);
+                            j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+                            j.async = true;
+
+                            e.parentNode.insertBefore(j, e);
+                        })(document, 'script');
+                    </script>
+                    <noscript> 为正常使用来必力评论功能请激活JavaScript</noscript>
+                </div>
+                <!-- City版安装代码已完成 -->
+                
+
+                
+
+            </div>
+
+            <div class="hidden-xs col-sm-3 toc-col">
+                <div class="toc-wrap">
+                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#项目结构"><span class="toc-text">项目结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#集成权限认证中间件"><span class="toc-text">集成权限认证中间件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#功能开发实例"><span class="toc-text">功能开发实例</span></a></li></ol>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5 class="text-center">
+                        <a href="/tags/">FEATURED TAGS</a>
+                    </h5>
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/#node"
+                           title="node">node</a>
+                        
+                        <a class="tag" href="/tags/#总结"
+                           title="总结">总结</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+
+    </div>
+</article>
+
+
+
+
+
+
+
+<!-- Footer -->
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <br>
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+                    <li>
+                        <a target="_blank" href="http://weibo.com/LeeYanXJ">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/liyanpro">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://www.linkedin.com/in/岩-李-1a5955189">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; liyan 2022
+                    <br>
+                    <span id="busuanzi_container_site_pv" style="font-size: 12px;">PV: <span id="busuanzi_value_site_pv"></span> </span>
+                    <br>
+                </p>
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/blog.js"></script>
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://liyan.cloud/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- swiftype -->
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install','','2.0.0');
+</script>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<!--wechat title img-->
+<img class="wechat-title-img" src="/img/li.jpg">
+</body>
+
+</html>

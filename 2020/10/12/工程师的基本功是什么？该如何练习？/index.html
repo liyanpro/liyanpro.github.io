@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="李岩的博客">
+    <meta name="keyword" content="李岩，博客，liyan,liyanpro">
+    <meta name="theme-color" content="#600090">
+    <meta name="msapplication-navbutton-color" content="#600090">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#600090">
+    <link rel="shortcut icon" href="/img/bea.ico">
+    <link rel="alternate" type="application/atom+xml" title="liyan" href="/atom.xml">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
+    <title>
+        
+        工程师的基本功是什么？该如何练习？｜Liyan‘s blog
+        
+    </title>
+
+    <link rel="canonical" href="https://liyan.cloud/2020/10/12/工程师的基本功是什么？该如何练习？/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/blog-style.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+</head>
+
+<style>
+
+    header.intro-header {
+        background-image: url('')
+    }
+</style>
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="" class="animated fadeIn">
+<!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top " id="nav-top" data-ispost = "true" data-istags="false
+" data-ishome = "false" >
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand animated pulse" href="/">
+                <span class="brand-logo">
+                    liyan
+                </span>
+                's Blog
+            </a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <!-- /.navbar-collapse -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+					
+                    
+                        
+							
+                        <li>
+                            <a href="/tags/">tags</a>
+                        </li>
+							
+						
+                    
+					
+					
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+//    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+<!-- Main Content -->
+
+<!--only post-->
+
+
+<img class="wechat-title-img"
+     src="nullhttps://bucketyy.oss-cn-beijing.aliyuncs.com/image/other/jishu.png">
+
+
+<style>
+    
+    header.intro-header {
+        background-image: url('https://bucketyy.oss-cn-beijing.aliyuncs.com/image/other/jishu.png?imageView2/1/w/1400/h/400/interlace/1/q/90')
+    }
+
+    
+</style>
+
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <div class="post-heading">
+                    <h1>工程师的基本功是什么？该如何练习？</h1>
+                    
+                    <span class="meta">
+                         作者 李岩
+                        <span>
+                          日期 2020-10-12
+                         </span>
+                    </span>
+                    <div class="tags text-center">
+                        
+                        <a class="tag" href="/tags/#基本功"
+                           title="基本功">基本功</a>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="post-title-haojen">
+        <span>
+            工程师的基本功是什么？该如何练习？
+        </span>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Container -->
+            <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
+                <blockquote>
+<p>转自 <a href="https://tech.meituan.com/2020/09/03/meituantech-basic-skills.html" target="_blank" rel="noopener">美团技术团队</a></p>
+</blockquote>
+<h4 id="一-技术基本功存在于每一行代码中"><a href="#一-技术基本功存在于每一行代码中" class="headerlink" title="一.技术基本功存在于每一行代码中"></a>一.技术基本功存在于每一行代码中</h4><p>“好” 的程序员和 “差” 的程序员，一般来讲都可以实现同样的需求。但是，他们写出来的程序在效率、质量、可维护性、可读性、可扩展性等维度可能存非常明显的差别，这种差别很大程度上取决于他们的技术基本功。 技术基本功存在于每一个项目、每一个代码文件、每一行代码中，是需要技术同学持续积累、持续锻炼的。 如何练好技术基本功？我认为最关键的是要不满足于仅搞定当下的需求，还要不断对自己提出更高的要求——Bug能否更少？以前趟过的坑是否可以避免？能否满足未来变化的需求？是否可以做到代码即文档？只有不断提高标准，持续地实践，才能不断打磨好基本功，让自己变得更加优秀。</p>
+<h4 id="二-把基础技能练扎实，就能形成肌肉记忆"><a href="#二-把基础技能练扎实，就能形成肌肉记忆" class="headerlink" title="二.把基础技能练扎实，就能形成肌肉记忆"></a>二.把基础技能练扎实，就能形成肌肉记忆</h4><p>技术基本功就是我们在从事技术工作过程中最基础的技能。把基础技能练扎实，就能形成肌肉记忆，收获的不仅是工作交付的质量变得更高，更重要的是工作也会变得更高效。只有这样，我们才可能有更多的时间和精力学习更高的技能，负责更复杂、更重要的工作。 我认为的技术基本功，应该包括计算机技术基础知识、编程规范与原则、设计模式、单元测试等等。而技术基本功的特征是那些最通用、最泛用的基础技能，不受具体业务或问题的束缚，不受技术角色与水平的束缚，也不受实现路径与方法的束缚。 如何练好呢？一是学习行业标准的基础技能，不断提升自己的认知；二是经年累月的大量实践；三是经常总结复盘，Review自己过去的工作，不断找到待提升点。</p>
+<p>基本功易学难精，并具备持续的可提升性</p>
+<p>一万小时定律说：“人们眼中的天才之所以卓越非凡，并非天资超人一等，而是付出了持续不断的努力。1万小时的锤炼，是任何人从平凡变成世界级大师的必要条件”。对技术同学来说更是如此。</p>
+<p>基本功是基础的知识和技能，易学难精，并具备持续的可提升性，反复训练提升后才能发挥巨大的价值。建议大家能够保持好奇心，坚持深度思考，脚踏实地，追求卓越，长期有耐心。</p>
+<h4 id="三-练习基本功没有捷径"><a href="#三-练习基本功没有捷径" class="headerlink" title="三.练习基本功没有捷径"></a>三.练习基本功没有捷径</h4><p>技术基本功决定了公司整体的技术水平，也是区别工程师段位的重要特征。对工程师而言，设计、编码、定位Bug是三项重要的基本功。技术基本功不易衡量和考核，它的提升更多源于工程师内心的技术理想以及把技术工作做到极致的态度。</p>
+<p>练习基本功也没有捷径，需要务实的心态、严谨的逻辑。当然，每一次设计、编码和Bug定位都是提升技术基本功的机会。此外，阶段性复盘对工作的持续提升也有帮助。</p>
+<h4 id="四-用最高的工作标准牵引基本功的锻炼"><a href="#四-用最高的工作标准牵引基本功的锻炼" class="headerlink" title="四.用最高的工作标准牵引基本功的锻炼"></a>四.用最高的工作标准牵引基本功的锻炼</h4><p>技术基本功，应该是工程师日常工作中高频发生的动作，比如做设计、写代码、Code Review、问题排查等等，是每一个工程师都必须掌握并且可锻炼提升的一些基本能力。只有基本功动作过硬，才能赢得团队信任，才能持续攻下山头，最终拿到业务结果，实现个人的成长。 在训练方法上，我认为重要的一点是坚持在日常工作中「追求卓越」，用最高的工作标准牵引基本功的锻炼，然后通过基本功提升来支撑更高的交付标准。希望大家能够认识到技术基本功的重要性，提高苦练技术基本功的意识，并在日常工作中对其反复锻炼和提升。</p>
+<h3 id="写在后面"><a href="#写在后面" class="headerlink" title="写在后面"></a>写在后面</h3><p>除了技术大咖的分享之外，我们也为大家准备了美团技术团队工程师此前写的两篇成长心法。</p>
+<p>第一篇是《工程师如何在工作中提升自己?》，古人云：“活到老，学到老。”互联网技术日新月异，很多工程师都疲于应付，叫苦不堪。如何在繁忙的工作中做好技术积累，构建个人核心竞争力，相信是很多工程师同行都在思考的问题：</p>
+<p>文章的第一部分阐述了一些学习的原则。任何时候，遵循一些经过检验的原则，这些都是影响效率的重要因素，正确的方法是成功的秘诀。<br>提升工作和学习效率的另一个重要因素是释惑和良好心态。第二部分分析了作者在工作中碰到和看到的一些典型困惑。<br>成为优秀的架构师是大部分初中级工程师的阶段性目标。第三部分剖析架构师的能力模型，让大家对目标所需能力有一个比较清晰的认知。<br>第二篇是《写给工程师的十条精进原则》，作者分享了自己用8年的时间从一个职场小白逐步成长为一名技术Leader的经验。</p>
+<p>很多技术同学工作中并不是不努力，但收效甚微，到底是哪里出了问题呢？经过一段时间的观察与思考后，作者总结了很重要的一项原因：大多数同学在工作中缺乏原则的指导。原则，犹如指引行动的“灯塔”，它连接着我们的价值观与行动。</p>
+<p>桥水基金创始人雷·达里奥在《原则》一书中写道，我们每个人都应该有自己的原则，当我们需要作出选择时，一定要坚持以原则为中心。这篇文章总结了十条工程师的精进原则：</p>
+<ul>
+<li>原则一：Owner意识</li>
+<li>原则二：时间观念</li>
+<li>原则三：以终为始</li>
+<li>原则四：闭环思维</li>
+<li>原则五：保持敬畏</li>
+<li>原则六：事不过二</li>
+<li>原则七：设计优先</li>
+<li>原则八：产出/产能平衡</li>
+<li>原则九：善于提问</li>
+<li>原则十：空杯心态</li>
+</ul>
+<p><em>以上这些原则有的侧重于个人做事情的方法，比如“Owner意识”、“时间观念”、“以终为始”、”闭环思维”等等；有的侧重于团队工作标准规范，如“保持敬畏”、“事不过二”、“设计优先”等等；有的侧重于团队或个人效能提升，如“产出与产能平衡”、“善于提问”、“空杯心态”等等。这些原则也是作者多年在工作与学习中，不断总结得来的经验。希望对大家的进阶成长能够有所帮助。</em></p>
+
+                <hr>
+                
+
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2020/10/12/Web-Security/" data-toggle="tooltip" data-placement="top"
+                           title="Web Security ">&larr; Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/2020/03/07/Redis数据结构及内存占比分析/" data-toggle="tooltip" data-placement="top"
+                           title="Redis数据结构及内存占比分析">Next Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+
+                
+
+
+                <!--加入新的评论系统-->
+                
+                <!-- 来必力City版安装代码 -->
+                <div id="lv-container" data-id="city" data-uid="liyanpro">
+                    <script type="text/javascript">
+                        (function(d, s) {
+                            var j, e = d.getElementsByTagName(s)[0];
+
+                            if (typeof LivereTower === 'function') { return; }
+
+                            j = d.createElement(s);
+                            j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+                            j.async = true;
+
+                            e.parentNode.insertBefore(j, e);
+                        })(document, 'script');
+                    </script>
+                    <noscript> 为正常使用来必力评论功能请激活JavaScript</noscript>
+                </div>
+                <!-- City版安装代码已完成 -->
+                
+
+                
+
+            </div>
+
+            <div class="hidden-xs col-sm-3 toc-col">
+                <div class="toc-wrap">
+                    <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#一-技术基本功存在于每一行代码中"><span class="toc-text">一.技术基本功存在于每一行代码中</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#二-把基础技能练扎实，就能形成肌肉记忆"><span class="toc-text">二.把基础技能练扎实，就能形成肌肉记忆</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#三-练习基本功没有捷径"><span class="toc-text">三.练习基本功没有捷径</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#四-用最高的工作标准牵引基本功的锻炼"><span class="toc-text">四.用最高的工作标准牵引基本功的锻炼</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#写在后面"><span class="toc-text">写在后面</span></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5 class="text-center">
+                        <a href="/tags/">FEATURED TAGS</a>
+                    </h5>
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/#基本功"
+                           title="基本功">基本功</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+
+    </div>
+</article>
+
+
+
+
+
+
+
+<!-- Footer -->
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <br>
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+                    <li>
+                        <a target="_blank" href="http://weibo.com/LeeYanXJ">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/liyanpro">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://www.linkedin.com/in/岩-李-1a5955189">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; liyan 2022
+                    <br>
+                    <span id="busuanzi_container_site_pv" style="font-size: 12px;">PV: <span id="busuanzi_value_site_pv"></span> </span>
+                    <br>
+                </p>
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/blog.js"></script>
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://liyan.cloud/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- swiftype -->
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install','','2.0.0');
+</script>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<!--wechat title img-->
+<img class="wechat-title-img" src="/img/li.jpg">
+</body>
+
+</html>

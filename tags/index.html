@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="李岩的博客">
+    <meta name="keyword" content="李岩，博客，liyan,liyanpro">
+    <meta name="theme-color" content="#600090">
+    <meta name="msapplication-navbutton-color" content="#600090">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#600090">
+    <link rel="shortcut icon" href="/img/bea.ico">
+    <link rel="alternate" type="application/atom+xml" title="liyan" href="/atom.xml">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
+    <title>
+        
+        tags｜Liyan‘s blog
+        
+    </title>
+
+    <link rel="canonical" href="https://liyan.cloud/tags/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/blog-style.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+</head>
+
+<style>
+
+    header.intro-header {
+        background-image: url('')
+    }
+</style>
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="" class="animated fadeIn">
+<!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top " id="nav-top" data-ispost = "false" data-istags="false
+" data-ishome = "false" >
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand animated pulse" href="/">
+                <span class="brand-logo">
+                    liyan
+                </span>
+                's Blog
+            </a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <!-- /.navbar-collapse -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+					
+                    
+                        
+							
+                        <li>
+                            <a href="/tags/">tags</a>
+                        </li>
+							
+						
+                    
+					
+					
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+//    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+<!-- Main Content -->
+<style>
+    .intro-header .site-heading {
+        margin: 50px;
+    }
+    
+    header.intro-header {
+        background-image: url('https://bucketyy.oss-cn-beijing.aliyuncs.com/image/tag-bg.jpg?imageView2/1/w/1400/h/400/interlace/1/q/90')
+    }
+    
+</style>
+
+<!-- Page Header -->
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
+                <div class="site-heading text-center">
+                    <h1>tags</h1>
+                    <span class="subheading"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Main Content -->
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <!-- 标签云 -->
+            <div id='tag_cloud' class="tags">
+                
+                <a href="#集群" title="集群" rel="1">集群</a>
+                
+                <a href="#MySQL" title="MySQL" rel="1">MySQL</a>
+                
+                <a href="#快捷键" title="快捷键" rel="1">快捷键</a>
+                
+                <a href="#Linux" title="Linux" rel="1">Linux</a>
+                
+                <a href="#redis" title="redis" rel="1">redis</a>
+                
+                <a href="#数据结构" title="数据结构" rel="1">数据结构</a>
+                
+                <a href="#网络" title="网络" rel="1">网络</a>
+                
+                <a href="#git" title="git" rel="1">git</a>
+                
+                <a href="#hexo" title="hexo" rel="1">hexo</a>
+                
+                <a href="#node" title="node" rel="1">node</a>
+                
+                <a href="#总结" title="总结" rel="1">总结</a>
+                
+                <a href="#大数据" title="大数据" rel="1">大数据</a>
+                
+                <a href="#nacos" title="nacos" rel="1">nacos</a>
+                
+                <a href="#dubbo" title="dubbo" rel="1">dubbo</a>
+                
+                <a href="#注册中心" title="注册中心" rel="1">注册中心</a>
+                
+                <a href="#rpc" title="rpc" rel="1">rpc</a>
+                
+                <a href="#java8" title="java8" rel="1">java8</a>
+                
+                <a href="#新特性" title="新特性" rel="1">新特性</a>
+                
+                <a href="#设计模式" title="设计模式" rel="1">设计模式</a>
+                
+                <a href="#动态代理" title="动态代理" rel="1">动态代理</a>
+                
+                <a href="#sql" title="sql" rel="1">sql</a>
+                
+                <a href="#shiro" title="shiro" rel="1">shiro</a>
+                
+                <a href="#springboot" title="springboot" rel="1">springboot</a>
+                
+                <a href="#权限管理" title="权限管理" rel="1">权限管理</a>
+                
+                <a href="#spring" title="spring" rel="1">spring</a>
+                
+                <a href="#旅游" title="旅游" rel="1">旅游</a>
+                
+                <a href="#西藏" title="西藏" rel="1">西藏</a>
+                
+                <a href="#　- 架构演进 　- 分布式架构" title="　- 架构演进 　- 分布式架构" rel="1">　- 架构演进 　- 分布式架构</a>
+                
+                <a href="#tomcat" title="tomcat" rel="1">tomcat</a>
+                
+                <a href="#内存" title="内存" rel="1">内存</a>
+                
+                <a href="#基本功" title="基本功" rel="1">基本功</a>
+                
+            </div>
+
+            <!-- 标签列表 -->
+            
+            <div class="one-tag-list">
+                <span class="fa fa-tag listing-seperator" id="集群">
+                    <span class="tag-text">集群</span>
+                </span>
+                
+                <div class="post-preview">
+                    <a href="/2022/02/22/MySQL集群搭建/">
+                        <h2 class="post-title">
+                            MySQL集群搭建
+                        </h2>
+                        
+                    </a>
+                </div>
+                <hr>
+                
+            </div>
+            
+            <div class="one-tag-list">
+                <span class="fa fa-tag listing-seperator" id="MySQL">
+                    <span class="tag-text">MySQL</span>
+                </span>
+                
+                <div class="post-preview">
+                    <a href="/2022/02/22/MySQL集群搭建/">
+                        <h2 class="post-title">
+                            MySQL集群搭建
+                        </h2>
+                        
+                    </a>
+                </div>
+                <hr>
+                
+            </div>
+            
+            <div class="one-tag-list">
+                <span class="fa fa-tag listing-seperator" id="快捷键">
+                    <span class="tag-text">快捷键</span>
+                </span>
+                
+                <div class="post-preview">
+                    <a href="/2020/02/22/IntelliJ-IDEA-For-Mac-快捷键/">
+                        <h2 class="post-title">
+                            IntelliJ IDEA For Mac 快捷键
+                        </h2>
+                        
+                    </a>
+                </div>
+                <hr>
+                
+            </div>
+            
+            <div class="one-tag-list">
+                <span class="fa fa-tag listing-seperator" id="Linux">
+                    <span class="tag-text">Linux</span>
+                </span>
+                
+                <div class="post-preview">
+                    <a href="/2022/02/10/Linux命令学习/">
+                        <h2 class="post-title">
+                            Linux命令学习
+                        </h2>
+                        
+                    </a>
+                </div>
+                <hr>
+                
+            </div>
+            
+            <div class="one-tag-list">
+                <span class="fa fa-tag listing-seperator" id="redis">
+                    <span class="tag-text">redis</span>
+                </span>
+                
+                <div class="post-preview">
+                    <a href="/2020/03/07/Redis数据结构及内存占比分析/">
+                        <h2 class="post-title">
+                            Redis数据结构及内存占比分析
+                        </h2>
+                        
+                    </a>
+                </div>
+                <hr>
+                
+            </div>
+            
+            <div class="one-tag-list">
+                <span class="fa fa-tag listing-seperator" id="数据结构">
+                    <span class="tag-text">数据结构</span>
+                </span>
+                
+                <div class="post-preview">
+                    <a href="/2020/03/07/Redis数据结构及内存占比分析/">
+                        <h2 class="post-title">
+                            Redis数据结构及内存占比分析
+                        </h2>
+                        
+                    </a>
+                </div>
+                <hr>
+                
+            </div>
+            
+            <div class="one-tag-list">
+                <span class="fa fa-tag listing-seperator" id="网络">
+                    <span class="tag-text">网络</span>
+                </span>
+                
+                <div class="post-preview">
+                    <a href="/2020/10/12/Web-Security/">
+                        <h2 class="post-title">
+                            Web Security 
+                        </h2>
+                        
+                    </a>
+                </div>
+                <hr>
+                
+            </div>
+            
+            <div class="one-tag-list">
+                <span class="fa fa-tag listing-seperator" id="git">
+                    <span class="tag-text">git</span>
+                </span>
+                
+                <div class="post-preview">
+                    <a href="/2017/04/02/git-hexo/">
+                        <h2 class="post-title">
+                            Git与Hexo命令
+                        </h2>
+                        
+                    </a>
+                </div>
+                <hr>
+                
+            </div>
+            
+            <div class="one-tag-list">
+                <span class="fa fa-tag listing-seperator" id="hexo">
+                    <span class="tag-text">hexo</span>
+                </span>
+                
+                <div class="post-preview">
+                    <a href="/2017/04/02/git-hexo/">
+                        <h2 class="post-title">
+                            Git与Hexo命令
+                        </h2>
+                        
+                    </a>
+                </div>
+                <hr>
+                
+            </div>
+            
+            <div class="one-tag-list">
+                <span class="fa fa-tag listing-seperator" id="node">
+                    <span class="tag-text">node</span>
+                </span>
+                
+                <div class="post-preview">
+                    <a href="/2018/06/18/express/">
+                        <h2 class="post-title">
+                            Express项目结构总结
+                        </h2>
+                        
+                    </a>
+                </div>
+                <hr>
+                
+            </div>
+            
+            <div class="one-tag-list">
+                <span class="fa fa-tag listing-seperator" id="总结">
+                    <span class="tag-text">总结</span>
+                </span>
+                
+                <div class="post-preview">
+                    <a href="/2018/06/18/express/">
+                        <h2 class="post-title">
+                            Express项目结构总结
+                        </h2>
+                        
+                    </a>
+                </div>
+                <hr>
+                
+            </div>
+            
+            <div class="one-tag-list">
+                <span class="fa fa-tag listing-seperator" id="大数据">
+                    <span class="tag-text">大数据</span>
+                </span>
+                
+                <div class="post-preview">
+                    <a href="/2020/01/19/hadoop学习-基础篇/">
+                        <h2 class="post-title">
+                            Hadoop学习-基础篇
+                        </h2>
+                        
+                    </a>
+                </div>
+                <hr>
+                
+            </div>
+            
+            <div class="one-tag-list">
+                <span class="fa fa-tag listing-seperator" id="nacos">
+                    <span class="tag-text">nacos</span>
+                </span>
+                
+                <div class="post-preview">
+                    <a href="/2019/08/15/dubbo生态之nacos注册中心/">
+                        <h2 class="post-title">
+                            dubbo生态之nacos注册中心
+                        </h2>
+                        
+                    </a>
+                </div>
+                <hr>
+                
+            </div>
+            
+            <div class="one-tag-list">
+                <span class="fa fa-tag listing-seperator" id="dubbo">
+                    <span class="tag-text">dubbo</span>
+                </span>
+                
+                <div class="post-preview">
+                    <a href="/2019/08/15/dubbo生态之nacos注册中心/">
+                        <h2 class="post-title">
+                            dubbo生态之nacos注册中心
+                        </h2>
+                        
+                    </a>
+                </div>
+                <hr>
+                
+            </div>
+            
+            <div class="one-tag-list">
+                <span class="fa fa-tag listing-seperator" id="注册中心">
+                    <span class="tag-text">注册中心</span>
+                </span>
+                
+                <div class="post-preview">
+                    <a href="/2019/08/15/dubbo生态之nacos注册中心/">
+                        <h2 class="post-title">
+                            dubbo生态之nacos注册中心
+                        </h2>
+                        
+                    </a>
+                </div>
+                <hr>
+                
+            </div>
+            
+            <div class="one-tag-list">
+                <span class="fa fa-tag listing-seperator" id="rpc">
+                    <span class="tag-text">rpc</span>
+                </span>
+                
+                <div class="post-preview">
+                    <a href="/2019/08/15/dubbo生态之nacos注册中心/">
+                        <h2 class="post-title">
+                            dubbo生态之nacos注册中心
+                        </h2>
+                        
+                    </a>
+                </div>
+                <hr>
+                
+            </div>
+            
+            <div class="one-tag-list">
+                <span class="fa fa-tag listing-seperator" id="java8">
+                    <span class="tag-text">java8</span>
+                </span>
+                
+                <div class="post-preview">
+                    <a href="/2020/02/10/java8特性/">
+                        <h2 class="post-title">
+                            java8新特性
+                        </h2>
+                        
+                    </a>
+                </div>
+                <hr>
+                
+            </div>
+            
+            <div class="one-tag-list">
+                <span class="fa fa-tag listing-seperator" id="新特性">
+                    <span class="tag-text">新特性</span>
+                </span>
+                
+                <div class="post-preview">
+                    <a href="/2020/02/10/java8特性/">
+                        <h2 class="post-title">
+                            java8新特性
+                        </h2>
+                        
+                    </a>
+                </div>
+                <hr>
+                
+            </div>
+            
+            <div class="one-tag-list">
+                <span class="fa fa-tag listing-seperator" id="设计模式">
+                    <span class="tag-text">设计模式</span>
+                </span>
+                
+                <div class="post-preview">
+                    <a href="/2019/11/17/proxy/">
+                        <h2 class="post-title">
+                            设计模式之代理模式
+                        </h2>
+                        
+                    </a>
+                </div>
+                <hr>
+                
+            </div>
+            
+            <div class="one-tag-list">
+                <span class="fa fa-tag listing-seperator" id="动态代理">
+                    <span class="tag-text">动态代理</span>
+                </span>
+                
+                <div class="post-preview">
+                    <a href="/2019/11/17/proxy/">
+                        <h2 class="post-title">
+                            设计模式之代理模式
+                        </h2>
+                        
+                    </a>
+                </div>
+                <hr>
+                
+            </div>
+            
+            <div class="one-tag-list">
+                <span class="fa fa-tag listing-seperator" id="sql">
+                    <span class="tag-text">sql</span>
+                </span>
+                
+                <div class="post-preview">
+                    <a href="/2017/04/01/pl-sql/">
+                        <h2 class="post-title">
+                            PL/SQL程序块
+                        </h2>
+                        
+                    </a>
+                </div>
+                <hr>
+                
+            </div>
+            
+            <div class="one-tag-list">
+                <span class="fa fa-tag listing-seperator" id="shiro">
+                    <span class="tag-text">shiro</span>
+                </span>
+                
+                <div class="post-preview">
+                    <a href="/2018/04/15/springboot_shiro/">
+                        <h2 class="post-title">
+                            SpringBoot集成Shiro权限管理
+                        </h2>
+                        
+                    </a>
+                </div>
+                <hr>
+                
+            </div>
+            
+            <div class="one-tag-list">
+                <span class="fa fa-tag listing-seperator" id="springboot">
+                    <span class="tag-text">springboot</span>
+                </span>
+                
+                <div class="post-preview">
+                    <a href="/2018/04/15/springboot_shiro/">
+                        <h2 class="post-title">
+                            SpringBoot集成Shiro权限管理
+                        </h2>
+                        
+                    </a>
+                </div>
+                <hr>
+                
+            </div>
+            
+            <div class="one-tag-list">
+                <span class="fa fa-tag listing-seperator" id="权限管理">
+                    <span class="tag-text">权限管理</span>
+                </span>
+                
+                <div class="post-preview">
+                    <a href="/2018/04/15/springboot_shiro/">
+                        <h2 class="post-title">
+                            SpringBoot集成Shiro权限管理
+                        </h2>
+                        
+                    </a>
+                </div>
+                <hr>
+                
+            </div>
+            
+            <div class="one-tag-list">
+                <span class="fa fa-tag listing-seperator" id="spring">
+                    <span class="tag-text">spring</span>
+                </span>
+                
+                <div class="post-preview">
+                    <a href="/2019/07/06/spring/">
+                        <h2 class="post-title">
+                            spring全家桶
+                        </h2>
+                        
+                    </a>
+                </div>
+                <hr>
+                
+            </div>
+            
+            <div class="one-tag-list">
+                <span class="fa fa-tag listing-seperator" id="旅游">
+                    <span class="tag-text">旅游</span>
+                </span>
+                
+                <div class="post-preview">
+                    <a href="/2019/11/04/tibet/">
+                        <h2 class="post-title">
+                            西藏之旅
+                        </h2>
+                        
+                    </a>
+                </div>
+                <hr>
+                
+            </div>
+            
+            <div class="one-tag-list">
+                <span class="fa fa-tag listing-seperator" id="西藏">
+                    <span class="tag-text">西藏</span>
+                </span>
+                
+                <div class="post-preview">
+                    <a href="/2019/11/04/tibet/">
+                        <h2 class="post-title">
+                            西藏之旅
+                        </h2>
+                        
+                    </a>
+                </div>
+                <hr>
+                
+            </div>
+            
+            <div class="one-tag-list">
+                <span class="fa fa-tag listing-seperator" id="　- 架构演进 　- 分布式架构">
+                    <span class="tag-text">　- 架构演进 　- 分布式架构</span>
+                </span>
+                
+                <div class="post-preview">
+                    <a href="/2019/06/24/taobao/">
+                        <h2 class="post-title">
+                            淘宝的架构演进之路
+                        </h2>
+                        
+                    </a>
+                </div>
+                <hr>
+                
+            </div>
+            
+            <div class="one-tag-list">
+                <span class="fa fa-tag listing-seperator" id="tomcat">
+                    <span class="tag-text">tomcat</span>
+                </span>
+                
+                <div class="post-preview">
+                    <a href="/2017/06/20/tomcat/">
+                        <h2 class="post-title">
+                            Tomcate内存详解
+                        </h2>
+                        
+                    </a>
+                </div>
+                <hr>
+                
+            </div>
+            
+            <div class="one-tag-list">
+                <span class="fa fa-tag listing-seperator" id="内存">
+                    <span class="tag-text">内存</span>
+                </span>
+                
+                <div class="post-preview">
+                    <a href="/2017/06/20/tomcat/">
+                        <h2 class="post-title">
+                            Tomcate内存详解
+                        </h2>
+                        
+                    </a>
+                </div>
+                <hr>
+                
+            </div>
+            
+            <div class="one-tag-list">
+                <span class="fa fa-tag listing-seperator" id="基本功">
+                    <span class="tag-text">基本功</span>
+                </span>
+                
+                <div class="post-preview">
+                    <a href="/2020/10/12/工程师的基本功是什么？该如何练习？/">
+                        <h2 class="post-title">
+                            工程师的基本功是什么？该如何练习？
+                        </h2>
+                        
+                    </a>
+                </div>
+                <hr>
+                
+            </div>
+            
+
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <br>
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+                    <li>
+                        <a target="_blank" href="http://weibo.com/LeeYanXJ">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/liyanpro">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://www.linkedin.com/in/岩-李-1a5955189">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; liyan 2022
+                    <br>
+                    <span id="busuanzi_container_site_pv" style="font-size: 12px;">PV: <span id="busuanzi_value_site_pv"></span> </span>
+                    <br>
+                </p>
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/blog.js"></script>
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://liyan.cloud/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- swiftype -->
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install','','2.0.0');
+</script>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<!--wechat title img-->
+<img class="wechat-title-img" src="/img/li.jpg">
+</body>
+
+</html>

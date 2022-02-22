@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="李岩的博客">
+    <meta name="keyword" content="李岩，博客，liyan,liyanpro">
+    <meta name="theme-color" content="#600090">
+    <meta name="msapplication-navbutton-color" content="#600090">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#600090">
+    <link rel="shortcut icon" href="/img/bea.ico">
+    <link rel="alternate" type="application/atom+xml" title="liyan" href="/atom.xml">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
+    <title>
+        
+        SpringBoot集成Shiro权限管理｜Liyan‘s blog
+        
+    </title>
+
+    <link rel="canonical" href="https://liyan.cloud/2018/04/15/springboot_shiro/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/blog-style.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+</head>
+
+<style>
+
+    header.intro-header {
+        background-image: url('')
+    }
+</style>
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="" class="animated fadeIn">
+<!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top " id="nav-top" data-ispost = "true" data-istags="false
+" data-ishome = "false" >
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand animated pulse" href="/">
+                <span class="brand-logo">
+                    liyan
+                </span>
+                's Blog
+            </a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <!-- /.navbar-collapse -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+					
+                    
+                        
+							
+                        <li>
+                            <a href="/tags/">tags</a>
+                        </li>
+							
+						
+                    
+					
+					
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+//    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+<!-- Main Content -->
+
+<!--only post-->
+
+
+<img class="wechat-title-img"
+     src="nullhttps://bucketyy.oss-cn-beijing.aliyuncs.com/image/post-bg-kuaidi.jpg">
+
+
+<style>
+    
+    header.intro-header {
+        background-image: url('https://bucketyy.oss-cn-beijing.aliyuncs.com/image/post-bg-kuaidi.jpg?imageView2/1/w/1400/h/400/interlace/1/q/90')
+    }
+
+    
+</style>
+
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <div class="post-heading">
+                    <h1>SpringBoot集成Shiro权限管理</h1>
+                    
+                    <span class="meta">
+                         作者 李岩
+                        <span>
+                          日期 2018-04-15
+                         </span>
+                    </span>
+                    <div class="tags text-center">
+                        
+                        <a class="tag" href="/tags/#shiro"
+                           title="shiro">shiro</a>
+                        
+                        <a class="tag" href="/tags/#springboot"
+                           title="springboot">springboot</a>
+                        
+                        <a class="tag" href="/tags/#权限管理"
+                           title="权限管理">权限管理</a>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="post-title-haojen">
+        <span>
+            SpringBoot集成Shiro权限管理
+        </span>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Container -->
+            <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
+                <p>最近给项目集成shiro权限管理，之前没有接触过，这几天也是查了一些资料，初步实现了登录验证和url的权限管理。</p>
+<h2 id="对Shiro的理解"><a href="#对Shiro的理解" class="headerlink" title="对Shiro的理解"></a>对Shiro的理解</h2><p>  shiro是Apache的开源框架，是一种功能强大且易用的安全框架，主要有四种功能。</p>
+<ul>
+<li>认证——用户的身份识别，常用作用户的登录</li>
+<li>权限——访问的控制，对于每次访问都会检查是否具有访问权限</li>
+<li>会话管理——会话管理，用户session管理器，用户相关的时间敏感的状态</li>
+<li>密码加密——把JDK中复杂的密码加密方式进行封装，保护或隐藏数据防止被偷窥</li>
+</ul>
+<p>网上找到架构图如下：<br><img src="https://upload-images.jianshu.io/upload_images/4367237-5569f11139646687.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>shiro包含三个核心的组件：Subject,SecurityManager 和 Realms</p>
+<ul>
+<li>Subject是与程序交互的对象，一般称之为用户，Subject 实例都必须绑定到一个SecurityManager上。一个applicationCode与Subject 的交互，在运行时shiro会自动将次subject转化为与SecurityManager的特定subject的交互 。</li>
+<li>SecurityManager是shiro的核心，协调各个模块的运行，无需我们对其操作，我们只要操作subject就好，其他都交给SecurityManager去管理。</li>
+<li>Realms是应用程序与持久化数据之间交互的桥梁，需要我们自己编程去实现相应的功能。比如登录认证需要实现对doGetAuthenticationInfo方法的重写，权限认证需要实现对doGetAuthorizationInfo方法的重写</li>
+</ul>
+<h2 id="集成shiro"><a href="#集成shiro" class="headerlink" title="集成shiro"></a>集成shiro</h2><h4 id="添加依赖"><a href="#添加依赖" class="headerlink" title="添加依赖"></a>添加依赖</h4><pre><code>&lt;dependency&gt;
+    &lt;groupId&gt;org.apache.shiro&lt;/groupId&gt;
+    &lt;artifactId&gt;shiro-spring&lt;/artifactId&gt;
+    &lt;version&gt;1.3.2&lt;/version&gt;
+&lt;/dependency&gt;</code></pre><h4 id="权限与角色表结构"><a href="#权限与角色表结构" class="headerlink" title="权限与角色表结构"></a>权限与角色表结构</h4><p>总共分四张表，用户角色表、角色表、角色权限表以及权限初始化表，用户与角色挂钩，角色与权限挂钩，每个用户可以担任多个角色，每个角色可以拥有多个权限，权限初始化表主要是对Shiro 拦截的请求做声明，提供访问页面与权限的关系。<br>角色表</p>
+<pre><code>DROP TABLE IF EXISTS `role`;
+CREATE TABLE `role` (
+   `id` bigint(64) DEFAULT NULL,
+   `name` varchar(32) DEFAULT NULL COMMENT &apos;角色名称&apos;
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;    </code></pre><p>角色权限表</p>
+<pre><code>DROP TABLE IF EXISTS `role_permission`;
+CREATE TABLE `role_permission` (
+ `id` bigint(64) NOT NULL,
+ `rid` bigint(64) DEFAULT NULL COMMENT &apos;角色ID&apos;,
+ `pname` varchar(255) DEFAULT NULL COMMENT &apos;权限ID&apos;,
+  PRIMARY KEY (`id`)
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8;</code></pre><p>用户角色表</p>
+<pre><code>DROP TABLE IF EXISTS `user_role`;
+CREATE TABLE `user_role` (
+ `id` bigint(64) NOT NULL,
+ `uid` bigint(64) DEFAULT NULL COMMENT &apos;用户ID&apos;,
+ `rid` bigint(64) DEFAULT NULL COMMENT &apos;角色ID&apos;,
+  PRIMARY KEY (`id`)
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8;</code></pre><p>权限初始化表</p>
+<pre><code>DROP TABLE IF EXISTS `permission_init`;
+CREATE TABLE `permission_init` (
+ `id` bigint(11) NOT NULL,
+ `url` varchar(255) DEFAULT NULL COMMENT &apos;链接&apos;,
+ `permission_init` varchar(255) DEFAULT NULL COMMENT &apos;需要具备的权限&apos;,
+ `sort` int(11) DEFAULT &apos;0&apos; COMMENT &apos;排序&apos;,
+  PRIMARY KEY (`id`)
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8;</code></pre><p>权限初始化表用来存储访问链接与其需要具备的权限，在shiro的配置类中进行动态加载。</p>
+<h4 id="Shiro配置类"><a href="#Shiro配置类" class="headerlink" title="Shiro配置类"></a>Shiro配置类</h4><pre><code>/**
+ * shiro配置
+ * 
+ * @title
+ * @author liyan
+ * @date 2018年5月23日 下午2:43:45
+ */
+ @Configuration
+ public class ShiroConfig {
+     @Autowired
+     private PermissionService permissionService;
+  @Bean
+  public ShiroFilterFactoryBean shiroFilter(SecurityManager sec urityManager) {
+    ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
+    shiroFilterFactoryBean.setSecurityManager(securityManager);
+    // 设置 SecurityManager
+    shiroFilterFactoryBean.setSecurityManager(securityManager);
+    // 设置登录页
+    shiroFilterFactoryBean.setLoginUrl(&quot;/login.html&quot;);
+    // 登录成功后要跳转的链接
+    shiroFilterFactoryBean.setSuccessUrl(&quot;/list.html&quot;);
+    // 未授权界面;
+    shiroFilterFactoryBean.setUnauthorizedUrl(&quot;/403.html&quot;);
+    // 权限控制map.
+    Map&lt;String, String&gt; filterChainDefinitionMap = new LinkedHashMap&lt;String, String&gt;();
+    // 从数据库获取访问链接的初始化权限，对shiro拦截的请求做声明
+    List&lt;PermissionInit&gt; permissionList = permissionService.getPermissionInit();
+    for (PermissionInit permission : permissionList) {
+        filterChainDefinitionMap.put(permission.getUrl(), permission.getPermissionInit());
+    }
+    shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
+    return shiroFilterFactoryBean;
+}
+
+ @Bean
+ public SecurityManager securityManager() {
+    DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
+    // 设置realm.
+    securityManager.setRealm(myShiroRealm());
+    // 注入记住我管理器;
+    securityManager.setRememberMeManager(rememberMeManager());
+    return securityManager;
+}
+
+/**
+ * 权限认证realm
+ * 
+ * @return
+ */
+ @Bean
+ public ShiroRealm shiroRealms() {
+    ShiroRealm shiroRealm = new ShiroRealm();
+    return shiroRealm;
+}
+
+/**
+ * cookie管理对象;记住我功能
+ * 
+ * @return
+ */
+ public CookieRememberMeManager rememberMeManager() {
+    CookieRememberMeManager cookieRememberMeManager = new CookieRememberMeManager();
+    cookieRememberMeManager.setCookie(rememberMeCookie());
+    // rememberMe cookie加密的密钥 建议每个项目都不一样 默认AES算法 密钥长度(128 256 512 位)
+    cookieRememberMeManager.setCipherKey(Base64.decode(&quot;3AvVhmFLUs0KTA3Kprsdag==&quot;));
+    return cookieRememberMeManager;
+}
+
+/**
+ * cookie对象;
+ * 
+ * @return
+ */
+ public SimpleCookie rememberMeCookie() {
+    // 这个参数是cookie的名称，对应前端的checkbox的name = rememberMe
+    SimpleCookie simpleCookie = new SimpleCookie(&quot;rememberMe&quot;);
+    // &lt;!-- 记住我cookie生效时间30天 ,单位秒;--&gt;
+    simpleCookie.setMaxAge(2592000);
+    return simpleCookie;
+  }
+}</code></pre><p>在不添加cookie对象管理的时候，登录接口里如果remeberMe为true，调用会报异常。需要注意的一点是，我在permission_init表中初始化的页面链接没有加页面的后缀.html，比如字段url的值为/create，过滤器拦截一直失败，只有改成/create.html才成功拦截进入到realm中。ShiroRealm是需要我们自己继承AuthorizingRealm类，并且重写doGetAuthenticationInfo和doGetAuthorizationInfo方法。</p>
+<pre><code>UsernamePasswordToken token = new UsernamePasswordToken(username, password, rememberMe);</code></pre><h4 id="实现ShiroRealm"><a href="#实现ShiroRealm" class="headerlink" title="实现ShiroRealm"></a>实现ShiroRealm</h4><h5 id="登录认证"><a href="#登录认证" class="headerlink" title="登录认证"></a>登录认证</h5><p>在Shiro中，最终的认证都是通过realm来获取应用程序的用户角色以及权限等信息，在对登录认证过程中，shiro会调用reaml的doGetAuthenticationInfo(AuthenticationToken authcToken)方法，验证通过后会返回一个封装了用户信息的SimpleAuthenticationInfo实例</p>
+<pre><code>/**
+ * 登录验证: Authentication 是用来验证用户身份
+ * 
+ * @param token
+ * @return
+ * @throws AuthenticationException
+ */
+@Override
+protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authcToken)
+        throws AuthenticationException {
+    UsernamePasswordToken token = (UsernamePasswordToken) authcToken;
+    String name = token.getUsername();
+    String password = String.valueOf(token.getPassword());
+    // 密码进行加密处理 明文为 password+name
+    String paw = password + name;
+    String pawDES = DesEncrypt.encryptBasedDes(paw);
+    // 从数据库获取对应用户名密码的用户
+    UserInfo userInfo = logionService.getUserInfo(name, pawDES);
+    if (null == userInfo) {
+        return null;
+    } else {
+        // 更新登录时间 last login time
+        userInfo.setLastLoginTime(new Date());
+        logionService.updateLoginTime(userInfo);
+    }
+    System.out.println(&quot;身份认证成功，登录用户：&quot; + name);
+    return new SimpleAuthenticationInfo(String.valueOf(userInfo.getUserId()), password, getName());
+}</code></pre><h5 id="权限认证"><a href="#权限认证" class="headerlink" title="权限认证"></a>权限认证</h5><p>访问的url只有在shiro的配置类里面添加了权限的filterChainDefinitions配置后，才会被拦截并跳转到重写的doGetAuthorizationInfo(PrincipalCollection principals)方法中，该方法获取当前用户的角色和拥有的权限信息，并封装到SimpleAuthorizationInfo的实例中，验证通过的允许访问，未经授权的会跳转到shiro配置类里面预先定义好的页面中，参考上面描述。</p>
+<pre><code>/**
+ * 权限认证：Authorization用来进行权限验证
+ */
+@Override
+protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
+    String userId = (String) SecurityUtils.getSubject().getPrincipal();
+    SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
+    Long userid = StringUtil.parseLong(userId);
+    // 查询用户所属角色，放入到Authorization里。
+    Set&lt;String&gt; roleSet = permissionService.getUserRole(userid);
+    info.setRoles(roleSet);
+    // 查询用户所拥有的权限（permission），放入到Authorization里。
+    Set&lt;String&gt; permissionSet = permissionService.getUserPermission(userid);
+    info.setStringPermissions(permissionSet);
+    return info;
+}</code></pre><h4 id="接口调用"><a href="#接口调用" class="headerlink" title="接口调用"></a>接口调用</h4><p>在登录接口中将登录信息封装在UsernamePasswordToken中，再调用subject的login方法执行登录，这时会进入realm中进行登录信息的验证工作。</p>
+<pre><code>UsernamePasswordToken token = new UsernamePasswordToken(username, password, rememberMe);
+Subject currentSubject=SecurityUtils.getSubject();
+currentSubject.login(token);
+currentSubject.getSession().setAttribute(&quot;name&quot;, username);
+serviceResult = new ServiceResult(HttpConstants.RESUTL_OK, &quot;登录成功&quot;);</code></pre>
+                <hr>
+                
+
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2018/06/18/express/" data-toggle="tooltip" data-placement="top"
+                           title="Express项目结构总结">&larr; Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/2018/02/27/scrapy/" data-toggle="tooltip" data-placement="top"
+                           title="初窥Scrapy">Next Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+
+                
+
+
+                <!--加入新的评论系统-->
+                
+                <!-- 来必力City版安装代码 -->
+                <div id="lv-container" data-id="city" data-uid="liyanpro">
+                    <script type="text/javascript">
+                        (function(d, s) {
+                            var j, e = d.getElementsByTagName(s)[0];
+
+                            if (typeof LivereTower === 'function') { return; }
+
+                            j = d.createElement(s);
+                            j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+                            j.async = true;
+
+                            e.parentNode.insertBefore(j, e);
+                        })(document, 'script');
+                    </script>
+                    <noscript> 为正常使用来必力评论功能请激活JavaScript</noscript>
+                </div>
+                <!-- City版安装代码已完成 -->
+                
+
+                
+
+            </div>
+
+            <div class="hidden-xs col-sm-3 toc-col">
+                <div class="toc-wrap">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#对Shiro的理解"><span class="toc-text">对Shiro的理解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#集成shiro"><span class="toc-text">集成shiro</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#添加依赖"><span class="toc-text">添加依赖</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#权限与角色表结构"><span class="toc-text">权限与角色表结构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Shiro配置类"><span class="toc-text">Shiro配置类</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#实现ShiroRealm"><span class="toc-text">实现ShiroRealm</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#登录认证"><span class="toc-text">登录认证</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#权限认证"><span class="toc-text">权限认证</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#接口调用"><span class="toc-text">接口调用</span></a></li></ol></li></ol></li></ol>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5 class="text-center">
+                        <a href="/tags/">FEATURED TAGS</a>
+                    </h5>
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/#shiro"
+                           title="shiro">shiro</a>
+                        
+                        <a class="tag" href="/tags/#springboot"
+                           title="springboot">springboot</a>
+                        
+                        <a class="tag" href="/tags/#权限管理"
+                           title="权限管理">权限管理</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+
+    </div>
+</article>
+
+
+
+
+
+
+
+<!-- Footer -->
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <br>
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+                    <li>
+                        <a target="_blank" href="http://weibo.com/LeeYanXJ">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/liyanpro">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://www.linkedin.com/in/岩-李-1a5955189">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; liyan 2022
+                    <br>
+                    <span id="busuanzi_container_site_pv" style="font-size: 12px;">PV: <span id="busuanzi_value_site_pv"></span> </span>
+                    <br>
+                </p>
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/blog.js"></script>
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://liyan.cloud/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- swiftype -->
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install','','2.0.0');
+</script>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<!--wechat title img-->
+<img class="wechat-title-img" src="/img/li.jpg">
+</body>
+
+</html>

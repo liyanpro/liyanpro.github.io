@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="李岩的博客">
+    <meta name="keyword" content="李岩，博客，liyan,liyanpro">
+    <meta name="theme-color" content="#600090">
+    <meta name="msapplication-navbutton-color" content="#600090">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#600090">
+    <link rel="shortcut icon" href="/img/bea.ico">
+    <link rel="alternate" type="application/atom+xml" title="liyan" href="/atom.xml">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
+    <title>
+        
+        MySQL集群搭建｜Liyan‘s blog
+        
+    </title>
+
+    <link rel="canonical" href="https://liyan.cloud/2022/02/22/MySQL集群搭建/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/blog-style.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+</head>
+
+<style>
+
+    header.intro-header {
+        background-image: url('')
+    }
+</style>
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="" class="animated fadeIn">
+<!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top " id="nav-top" data-ispost = "true" data-istags="false
+" data-ishome = "false" >
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand animated pulse" href="/">
+                <span class="brand-logo">
+                    liyan
+                </span>
+                's Blog
+            </a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <!-- /.navbar-collapse -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+					
+                    
+                        
+							
+                        <li>
+                            <a href="/tags/">tags</a>
+                        </li>
+							
+						
+                    
+					
+					
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+//    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+<!-- Main Content -->
+
+<!--only post-->
+
+
+<img class="wechat-title-img"
+     src="/img/post-bg.jpg">
+
+
+<style>
+    
+    header.intro-header {
+        background-image: url('/img/post-bg.jpg')
+    }
+
+    
+</style>
+
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <div class="post-heading">
+                    <h1>MySQL集群搭建</h1>
+                    
+                    <span class="meta">
+                         作者 李岩
+                        <span>
+                          日期 2022-02-22
+                         </span>
+                    </span>
+                    <div class="tags text-center">
+                        
+                        <a class="tag" href="/tags/#集群"
+                           title="集群">集群</a>
+                        
+                        <a class="tag" href="/tags/#MySQL"
+                           title="MySQL">MySQL</a>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="post-title-haojen">
+        <span>
+            MySQL集群搭建
+        </span>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Container -->
+            <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
+                <p> M1：主服务器（ip1）  M2: 从服务器（ip2）</p>
+<blockquote>
+<p>/etc/mycnf 配置mysql的binlog<br>重启：systemctl restart mysqld<br>获取临时密码； sudo grep ‘temporary’ /var/log/mysqld.log  </p>
+</blockquote>
+<p>安全配置向导</p>
+<blockquote>
+<p>M1&amp;M2   newpassword:  root / rootpassword    repluser / userpassword  #主从同步专用用户    security_con  /  conpassword  #业务专用用户</p>
+</blockquote>
+<h3 id="1-mysqldump-导出备份，同步到从服务器，再恢复"><a href="#1-mysqldump-导出备份，同步到从服务器，再恢复" class="headerlink" title="1. mysqldump 导出备份，同步到从服务器，再恢复"></a>1. mysqldump 导出备份，同步到从服务器，再恢复</h3><pre><code>备份：
+
+      mysqldump -uroot -p&apos;password&apos; --all-databases --single-transaction &gt; /home/atrust-app/data/mysql_full-1.sql;
+恢复：
+
+      mysql -uroot -p&apos;password&apos; &lt; /home/atrust-app/data/mysql_full-1.sql</code></pre><h3 id="2-查看主服务器状态"><a href="#2-查看主服务器状态" class="headerlink" title="2. 查看主服务器状态"></a>2. 查看主服务器状态</h3><pre><code>mysql&gt; show master status;
++------------------+----------+--------------+------------------+-------------------+
+| File             | Position | Binlog_Do_DB | Binlog_Ignore_DB | Executed_Gtid_Set |
++------------------+----------+--------------+------------------+-------------------+
+| M1-binlog.000001 |     1433 |              |                  |                   |
++------------------+----------+--------------+------------------+-------------------+
+1 row in set (0.00 sec)</code></pre><h5 id="1-登录从服务器"><a href="#1-登录从服务器" class="headerlink" title="1).登录从服务器"></a>1).登录从服务器</h5><pre><code>  change master to
+ -&gt; master_host=&apos;ip1&apos;,
+ -&gt; master_user=&apos;repluser&apos;,
+ -&gt; master_password=&apos;password&apos;,
+ -&gt; master_log_file=&apos;M1-binlog.000001&apos;,
+ -&gt; master_log_pos=1433;
+Query OK, 0 rows affected, 2 warnings (0.00 sec)</code></pre><h5 id="2-启动slave同步进程"><a href="#2-启动slave同步进程" class="headerlink" title="2).启动slave同步进程"></a>2).启动slave同步进程</h5><pre><code>start slave;
+show slave status\G; #查看slave状态
+*************************** 1. row ***************************
+            Slave_IO_State: Waiting for master to send event
+               Master_Host: ip1
+               Master_User: repluser
+               Master_Port: 3306
+             Connect_Retry: 60
+           Master_Log_File: M1-binlog.000001
+       Read_Master_Log_Pos: 1433
+            Relay_Log_File: tgypt-xx13b003-yh20w-relay-bin.000002
+             Relay_Log_Pos: 320
+     Relay_Master_Log_File: M1-binlog.000001
+          Slave_IO_Running: Yes
+         Slave_SQL_Running: Yes   ##这两个为yes表示成功</code></pre><h5 id="3-验证以M1为主，M2为从的主从复制"><a href="#3-验证以M1为主，M2为从的主从复制" class="headerlink" title="3).验证以M1为主，M2为从的主从复制"></a>3).验证以M1为主，M2为从的主从复制</h5><h5 id="4-设置M2为主，M1为从模式"><a href="#4-设置M2为主，M1为从模式" class="headerlink" title="4).设置M2为主，M1为从模式"></a>4).设置M2为主，M1为从模式</h5><pre><code>M2服务器状态：
+
+    mysql&gt; show master status;
+   +------------------+----------+--------------+------------------+-------------------+
+   | File             | Position | Binlog_Do_DB | Binlog_Ignore_DB | Executed_Gtid_Set |
+   +------------------+----------+--------------+------------------+-------------------+
+   | M2-binlog.000001 |   832935 |              |                  |                   |
+   +------------------+----------+--------------+------------------+-------------------+
+   1 row in set (0.00 sec)
+
+yum -y install keepalived</code></pre><h3 id="3-M2-备机上配置回切脚本-home-atrust-app-opt-mysql-cutback-sh"><a href="#3-M2-备机上配置回切脚本-home-atrust-app-opt-mysql-cutback-sh" class="headerlink" title="3. M2 备机上配置回切脚本 /home/atrust-app/opt/mysql_cutback.sh"></a>3. M2 备机上配置回切脚本 /home/atrust-app/opt/mysql_cutback.sh</h3><h3 id="4-VIP为：VIP1"><a href="#4-VIP为：VIP1" class="headerlink" title="4. VIP为：VIP1"></a>4. VIP为：VIP1</h3><h3 id="5-keepalived搭建"><a href="#5-keepalived搭建" class="headerlink" title="5. keepalived搭建"></a>5. keepalived搭建</h3><pre><code>  K1主（ip1）  K2从（ip2）
+
+ 1）修改 K1机器上 /etc/keepalived/keepalived.conf
+   ! Configuration File for keepalived
+
+
+vrrp_script chk_mysql {
+    script  &quot;/etc/keepalived/check_mysql.sh&quot;
+    interval 30  #设置检查间隔时长
+}
+
+vrrp_instance VI_1 {
+    state BACKUP
+    interface bond0.2001 ##IP绑定在哪个网卡上写哪个，ifconfig查看
+    virtual_router_id 60
+    priority 100
+    advert_int 1
+    nopreempt
+    authentication {
+        auth_type PASS
+        auth_pass 1111
+    }
+    track_script {
+      chk_mysql
+    }
+    virtual_ipaddress {
+        vip1    #需要修改
+    }
+}</code></pre><h3 id="shell脚本"><a href="#shell脚本" class="headerlink" title="shell脚本"></a>shell脚本</h3><h5 id="1-check-mysql-sh"><a href="#1-check-mysql-sh" class="headerlink" title="1) check_mysql.sh"></a>1) check_mysql.sh</h5><pre><code>#!/bin/bash
+
+###判断如果上次检查的脚本还没执行完，则退出此次执行
+if [ `ps -ef|grep -w &quot;$0&quot;|grep -v &quot;grep&quot;|wc -l` -gt 2 ];then
+    exit 0
+fi 
+mysql_con=&apos;mysql -uroot -p123456&apos;
+error_log=&quot;/etc/keepalived/logs/check_mysql.err&quot;
+
+###定义一个简单判断mysql是否可用的函数
+function excute_query {
+    ${mysql_con} -e &quot;select 1;&quot; 2&gt;&gt; ${error_log}
+}
+
+###定义无法执行查询，且mysql服务异常时的处理函数
+function service_error {
+    echo -e &quot;`date &quot;+%F  %H:%M:%S&quot;`    -----mysql service error，now stop keepalived-----&quot; &gt;&gt; ${error_log}
+    service keepalived stop &amp;&gt;&gt; ${error_log}
+    echo &quot;DB1 keepalived 已停止&quot;|mail -s &quot;DB1 keepalived 已停止,请及时处理！&quot; liyansuper@outlook.com 2&gt;&gt; ${error_log}
+    echo -e &quot;\n---------------------------------------------------------\n&quot; &gt;&gt; ${error_log}
+}
+
+###定义无法执行查询,但mysql服务正常的处理函数
+function query_error {
+    echo -e &quot;`date &quot;+%F  %H:%M:%S&quot;`    -----query error, but mysql service ok, retry after 30s-----&quot; &gt;&gt; ${error_log}
+    sleep 30
+    excute_query
+    if [ $? -ne 0 ];then
+        echo -e &quot;`date &quot;+%F  %H:%M:%S&quot;`    -----still can&apos;t execute query-----&quot; &gt;&gt; ${error_log}
+
+        ###对DB1设置read_only属性
+        echo -e &quot;`date &quot;+%F  %H:%M:%S&quot;`    -----set read_only = 1 on DB1-----&quot; &gt;&gt; ${error_log}
+        mysql_con -e &quot;set global read_only = 1;&quot; 2&gt;&gt; ${error_log}
+
+        ###kill掉当前客户端连接
+        echo -e &quot;`date &quot;+%F  %H:%M:%S&quot;`    -----kill current client thread-----&quot; &gt;&gt; ${error_log}
+        rm -f /tmp/kill.sql &amp;&gt;/dev/null
+        ###这里其实是一个批量kill线程的小技巧
+        mysql_con -e &apos;select concat(&quot;kill &quot;,id,&quot;;&quot;) from  information_schema.PROCESSLIST where command=&quot;Query&quot; or command=&quot;Execute&quot; into outfile &quot;/tmp/kill.sql&quot;;&apos;
+        mysql_con -e &quot;source /tmp/kill.sql&quot;
+        sleep 2    ###给kill一个执行和缓冲时间
+        ###关闭本机keepalived       
+        echo -e &quot;`date &quot;+%F  %H:%M:%S&quot;`    -----stop keepalived-----&quot; &gt;&gt; ${error_log}
+        service keepalived stop &amp;&gt;&gt; ${error_log}
+        echo &quot;DB1 keepalived 已停止&quot;|mail -s &quot;DB1 keepalived 已停止,请及时处理！&quot; liyansuper@outlook.com 2&gt;&gt; ${error_log}
+        echo -e &quot;\n---------------------------------------------------------\n&quot; &gt;&gt; ${error_log}
+    else
+        echo -e &quot;`date &quot;+%F  %H:%M:%S&quot;`    -----query ok after 30s-----&quot; &gt;&gt; ${error_log}
+        echo -e &quot;\n---------------------------------------------------------\n&quot; &gt;&gt; ${error_log}
+    fi
+}
+
+###检查开始: 执行查询
+excute_query
+if [ $? -ne 0 ];then
+    service mysqld status &amp;&gt;/dev/null
+    if [ $? -ne 0 ];then
+        service_error
+    else
+        query_error
+    fi
+fi    </code></pre><h5 id="2-mysql-cutback-sh"><a href="#2-mysql-cutback-sh" class="headerlink" title="2) mysql_cutback.sh"></a>2) mysql_cutback.sh</h5><pre><code>#!/bin/bash
+###手动执行将主库切换回DB1的操作
+
+mysql_con=&apos;mysql -uroot -ppassword&apos;
+
+echo -e &quot;`date &quot;+%F  %H:%M:%S&quot;`    -----change to BACKUP manually-----&quot; &gt;&gt; /etc/keepalived/logs/state_change.log
+echo -e &quot;`date &quot;+%F  %H:%M:%S&quot;`    -----set read_only = 1 on DB2-----&quot; &gt;&gt; /etc/keepalived/logs/state_change.log
+$mysql_con -e &quot;set global read_only = 1;&quot; 2&gt;&gt; /etc/keepalived/logs/state_change.log
+
+###kill掉当前客户端连接
+echo -e &quot;`date &quot;+%F  %H:%M:%S&quot;`    -----kill current client thread-----&quot; &gt;&gt; /etc/keepalived/logs/state_change.log
+rm -f /tmp/kill.sql &amp;&gt;/dev/null
+###这里其实是一个批量kill线程的小技巧
+$mysql_con -e &apos;select concat(&quot;kill &quot;,id,&quot;;&quot;) from  information_schema.PROCESSLIST where command=&quot;Query&quot; or command=&quot;Execute&quot; into outfile &quot;/tmp/kill.sql&quot;;&apos;
+$mysql_con -e &quot;source /tmp/kill.sql&quot; 2&gt;&gt; /etc/keepalived/logs/state_change.log
+sleep 2    ###给kill一个执行和缓冲时间
+
+###确保DB1已经追上了,下面的repl为复制所用的账户，-h后跟DB1的内网IP
+log_file_pos=`mysql -urepluser -pcTl2021:at#89! -h10.238.0.92 -e &quot;show slave status\G;&quot;|egrep -w &quot;Master_Log_File|Read_Master_Log_Pos|Relay_Master_Log_File|Exec_Master_Log_Pos&quot;`
+Master_Log_File=`echo $log_file_pos|awk &apos;{print $2}&apos;`
+Read_Master_Log_Pos=`echo $log_file_pos|awk &apos;{print $4}&apos;`
+Relay_Master_Log_File=`echo $log_file_pos|awk &apos;{print $6}&apos;`
+Exec_Master_Log_Pos=`echo $log_file_pos|awk &apos;{print $8}&apos;`
+until [ $Read_Master_Log_Pos = $Exec_Master_Log_Pos -a $Master_Log_File = $Relay_Master_Log_File ]
+do
+    echo -e &quot;`date &quot;+%F  %H:%M:%S&quot;`    -----DB1 Exec_Master_Log_Pos($exec_pos) is behind Read_Master_Log_Pos($read_pos), wait......&quot; &gt;&gt; /etc/keepalived/logs/state_change.log
+    sleep 1
+done
+
+###然后解除DB1的read_only属性
+echo -e &quot;`date &quot;+%F  %H:%M:%S&quot;`    -----set read_only = 0 on DB1-----&quot; &gt;&gt; /etc/keepalived/logs/state_change.log
+ssh 10.238.0.92 &apos;mysql -uroot -ppassword -e &quot;set global read_only = 0;&quot; &amp;&amp; /etc/init.d/keepalived start&apos; 2&gt;&gt; /etc/keepalived/logs/state_change.log
+
+###重启DB2的keepalived使VIP漂移到DB1
+echo -e &quot;`date &quot;+%F  %H:%M:%S&quot;`    -----make VIP move to DB1-----&quot; &gt;&gt; /etc/keepalived/logs/state_change.log
+/sbin/service keepalived restart &amp;&gt;&gt; /etc/keepalived/logs/state_change.log
+
+echo &quot;DB2 keepalived转为BACKUP状态，线上数据库切换至DB1&quot;|mail -s &quot;DB2 keepalived change to BACKUP&quot; liyansuper@outlook.com 2&gt;&gt; /etc/keepalived/logs/state_change.log
+
+echo -e &quot;--------------------------------------------------\n&quot; &gt;&gt; /etc/keepalived/logs/state_change.log</code></pre><h5 id="3-notify-master-mysql-sh"><a href="#3-notify-master-mysql-sh" class="headerlink" title="3) notify_master_mysql.sh"></a>3) notify_master_mysql.sh</h5><pre><code>#!/bin/bash
+###当keepalived监测到本机转为MASTER状态时，执行该脚本
+
+change_log=/etc/keepalived/logs/state_change.log
+mysql_con=&apos;mysql -uroot -p123456&apos;
+echo -e &quot;`date &quot;+%F  %H:%M:%S&quot;`   -----keepalived change to MASTER-----&quot; &gt;&gt; $change_log
+
+slave_info() {
+    ###统一定义一个函数取得slave的position、running、和log_file等信息
+    ###根据函数后面所跟参数来决定取得哪些数据
+    if [ $1 = slave_status ];then
+        slave_stat=`${mysql_con} -e &quot;show slave status\G;&quot;|egrep -w &quot;Slave_IO_Running|Slave_SQL_Running&quot;`
+        Slave_IO_Running=`echo $slave_stat|awk &apos;{print $2}&apos;`
+        Slave_SQL_Running=`echo $slave_stat|awk &apos;{print $4}&apos;`
+    elif [ $1 = log_file -a $2 = pos ];then
+        log_file_pos=`${mysql_con} -e &quot;show slave status\G;&quot;|egrep -w &quot;Master_Log_File|Read_Master_Log_Pos|Relay_Master_Log_File|Exec_Master_Log_Pos&quot;`
+        Master_Log_File=`echo $log_file_pos|awk &apos;{print $2}&apos;`
+        Read_Master_Log_Pos=`echo $log_file_pos|awk &apos;{print $4}&apos;`
+        Relay_Master_Log_File=`echo $log_file_pos|awk &apos;{print $6}&apos;`
+        Exec_Master_Log_Pos=`echo $log_file_pos|awk &apos;{print $8}&apos;`
+    fi
+}
+
+action() {
+    ###经判断&apos;应该&amp;可以&apos;切换时执行的动作
+    echo -e &quot;`date &quot;+%F  %H:%M:%S&quot;`    -----set read_only = 0 on DB2-----&quot; &gt;&gt; $change_log
+
+    ###解除read_only属性
+    ${mysql_con} -e &quot;set global read_only = 0;&quot; 2&gt;&gt; $change_log
+
+    echo &quot;DB2 keepalived转为MASTER状态，线上数据库切换至DB2&quot;|mail -s &quot;DB2 keepalived change to MASTER&quot;\
+    liyansuper@outlook.com 2&gt;&gt; $change_log
+
+    echo -e &quot;---------------------------------------------------------\n&quot; &gt;&gt; $change_log
+}
+
+slave_info slave_status
+if [ $Slave_SQL_Running = Yes ];then
+    i=0    #一个计数器
+    slave_info log_file pos
+        ###判断从master接收到的binlog是否全部在本地执行(这样仍无法完全确定从库已追上主库，因为无法完全保证io_thread没有延时(由网络传输问题导致的从库落后的概率很小)
+    until [ $Master_Log_File = $Relay_Master_Log_File -a $Read_Master_Log_Pos = $Exec_Master_Log_Pos ]
+     do
+        if [ $i -lt 10 ];then    #将等待exec_pos追上read_pos的时间限制为10s
+            echo -e &quot;`date &quot;+%F  %H:%M:%S&quot;`    -----Relay_Master_Log_File=$Relay_Master_Log_File,Exec_Master_Log_Pos=$Exec_Master_Log_Pos is behind Master_Log_File=$Master_Log_File,Read_Master_Log_Pos=$Read_Master_Log_Pos, wait......&quot; &gt;&gt; $change_log    #输出消息到日志，等待exec_pos=read_pos
+            i=$(($i+1))
+            sleep 1
+            slave_info log_file pos
+        else
+            echo -e &quot;The waits time is more than 10s,now force change. Master_Log_File=$Master_Log_File Read_Master_Log_Pos=$Read_Master_Log_Pos Relay_Master_Log_File=$Relay_Master_Log_File Exec_Master_Log_Pos=$Exec_Master_Log_Pos&quot; &gt;&gt; $change_log
+            action
+            exit 0
+        fi
+    done
+    action 
+
+else
+    slave_info log_file pos
+    echo -e &quot;DB2&apos;s slave status is wrong,now force change. Master_Log_File=$Master_Log_File Read_Master_Log_Pos=$Read_Master_Log_Pos Relay_Master_Log_File=$Relay_Master_Log_File Exec_Master_Log_Pos=$Exec_Master_Log_Pos&quot; &gt;&gt; $change_log
+    action
+fi</code></pre>
+                <hr>
+                
+
+                <ul class="pager">
+                    
+                    
+                    <li class="next">
+                        <a href="/2022/02/10/Linux命令学习/" data-toggle="tooltip" data-placement="top"
+                           title="Linux命令学习">Next Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+
+                
+
+
+                <!--加入新的评论系统-->
+                
+                <!-- 来必力City版安装代码 -->
+                <div id="lv-container" data-id="city" data-uid="liyanpro">
+                    <script type="text/javascript">
+                        (function(d, s) {
+                            var j, e = d.getElementsByTagName(s)[0];
+
+                            if (typeof LivereTower === 'function') { return; }
+
+                            j = d.createElement(s);
+                            j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+                            j.async = true;
+
+                            e.parentNode.insertBefore(j, e);
+                        })(document, 'script');
+                    </script>
+                    <noscript> 为正常使用来必力评论功能请激活JavaScript</noscript>
+                </div>
+                <!-- City版安装代码已完成 -->
+                
+
+                
+
+            </div>
+
+            <div class="hidden-xs col-sm-3 toc-col">
+                <div class="toc-wrap">
+                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-mysqldump-导出备份，同步到从服务器，再恢复"><span class="toc-text">1. mysqldump 导出备份，同步到从服务器，再恢复</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-查看主服务器状态"><span class="toc-text">2. 查看主服务器状态</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-登录从服务器"><span class="toc-text">1).登录从服务器</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-启动slave同步进程"><span class="toc-text">2).启动slave同步进程</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-验证以M1为主，M2为从的主从复制"><span class="toc-text">3).验证以M1为主，M2为从的主从复制</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-设置M2为主，M1为从模式"><span class="toc-text">4).设置M2为主，M1为从模式</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-M2-备机上配置回切脚本-home-atrust-app-opt-mysql-cutback-sh"><span class="toc-text">3. M2 备机上配置回切脚本 /home/atrust-app/opt/mysql_cutback.sh</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-VIP为：VIP1"><span class="toc-text">4. VIP为：VIP1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-keepalived搭建"><span class="toc-text">5. keepalived搭建</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#shell脚本"><span class="toc-text">shell脚本</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-check-mysql-sh"><span class="toc-text">1) check_mysql.sh</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-mysql-cutback-sh"><span class="toc-text">2) mysql_cutback.sh</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-notify-master-mysql-sh"><span class="toc-text">3) notify_master_mysql.sh</span></a></li></ol></li></ol></li></ol>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5 class="text-center">
+                        <a href="/tags/">FEATURED TAGS</a>
+                    </h5>
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/#集群"
+                           title="集群">集群</a>
+                        
+                        <a class="tag" href="/tags/#MySQL"
+                           title="MySQL">MySQL</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+
+    </div>
+</article>
+
+
+
+
+
+
+
+<!-- Footer -->
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <br>
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+                    <li>
+                        <a target="_blank" href="http://weibo.com/LeeYanXJ">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/liyanpro">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://www.linkedin.com/in/岩-李-1a5955189">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; liyan 2022
+                    <br>
+                    <span id="busuanzi_container_site_pv" style="font-size: 12px;">PV: <span id="busuanzi_value_site_pv"></span> </span>
+                    <br>
+                </p>
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/blog.js"></script>
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://liyan.cloud/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- swiftype -->
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install','','2.0.0');
+</script>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<!--wechat title img-->
+<img class="wechat-title-img" src="/img/li.jpg">
+</body>
+
+</html>

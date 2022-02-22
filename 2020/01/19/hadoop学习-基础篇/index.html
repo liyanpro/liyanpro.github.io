@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="李岩的博客">
+    <meta name="keyword" content="李岩，博客，liyan,liyanpro">
+    <meta name="theme-color" content="#600090">
+    <meta name="msapplication-navbutton-color" content="#600090">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#600090">
+    <link rel="shortcut icon" href="/img/bea.ico">
+    <link rel="alternate" type="application/atom+xml" title="liyan" href="/atom.xml">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
+    <title>
+        
+        Hadoop学习-基础篇｜Liyan‘s blog
+        
+    </title>
+
+    <link rel="canonical" href="https://liyan.cloud/2020/01/19/hadoop学习-基础篇/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/blog-style.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+</head>
+
+<style>
+
+    header.intro-header {
+        background-image: url('')
+    }
+</style>
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="" class="animated fadeIn">
+<!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top " id="nav-top" data-ispost = "true" data-istags="false
+" data-ishome = "false" >
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand animated pulse" href="/">
+                <span class="brand-logo">
+                    liyan
+                </span>
+                's Blog
+            </a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <!-- /.navbar-collapse -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+					
+                    
+                        
+							
+                        <li>
+                            <a href="/tags/">tags</a>
+                        </li>
+							
+						
+                    
+					
+					
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+//    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+<!-- Main Content -->
+
+<!--only post-->
+
+
+<img class="wechat-title-img"
+     src="nullhttps://bucketyy.oss-cn-beijing.aliyuncs.com/image/hadoop/Install-Hadoop.png">
+
+
+<style>
+    
+    header.intro-header {
+        background-image: url('https://bucketyy.oss-cn-beijing.aliyuncs.com/image/hadoop/Install-Hadoop.png?imageView2/1/w/1400/h/400/interlace/1/q/90')
+    }
+
+    
+</style>
+
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <div class="post-heading">
+                    <h1>Hadoop学习-基础篇</h1>
+                    
+                    <span class="meta">
+                         作者 李岩
+                        <span>
+                          日期 2020-01-19
+                         </span>
+                    </span>
+                    <div class="tags text-center">
+                        
+                        <a class="tag" href="/tags/#大数据"
+                           title="大数据">大数据</a>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="post-title-haojen">
+        <span>
+            Hadoop学习-基础篇
+        </span>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Container -->
+            <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
+                <blockquote>
+<p>Hadoop 大数据平台与架构</p>
+</blockquote>
+<h3 id="功能与优势"><a href="#功能与优势" class="headerlink" title="功能与优势"></a>功能与优势</h3><p>Hadoop是大数据存储与分析的架构，是分布式存储和分布式计算平台</p>
+<h3 id="两个核心组成"><a href="#两个核心组成" class="headerlink" title="两个核心组成"></a>两个核心组成</h3><ul>
+<li>HDFS：分布式文件系统，用于存储海量的数据</li>
+<li>MapReduce：并行处理框架，实现任务的分解和调度</li>
+</ul>
+<h3 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h3><p>可用于搭建数据仓库，分析统计数据</p>
+<h3 id="生态"><a href="#生态" class="headerlink" title="生态"></a>生态</h3><ul>
+<li>HIVE：SQL语句形式，转换为Hadoop任务去执行</li>
+<li>HBASE：存储结构化数据的分布式数据库</li>
+<li>zookeeper：服务注册、治理</li>
+</ul>
+<h3 id="HDFS概念"><a href="#HDFS概念" class="headerlink" title="HDFS概念"></a>HDFS概念</h3><ul>
+<li>块（Block）：文件被切分成同大小的数据块，默认为64MB，是文件存储的逻辑单元</li>
+<li>NameNode：数据管理节点，包括文件与数据块映射表，数据块与数据节点映射表</li>
+<li>DataNode：工作节点，存放真正的数据块</li>
+</ul>
+<p><img src="https://bucketyy.oss-cn-beijing.aliyuncs.com/image/hadoop/hadoop_dataNode%E5%B7%A5%E4%BD%9C.jpg" alt></p>
+<h4 id="HDFS数据管理与容错"><a href="#HDFS数据管理与容错" class="headerlink" title="HDFS数据管理与容错"></a>HDFS数据管理与容错</h4><p>每个数据块有3个副本，分布在两个机架上，如上图数据块</p>
+<h4 id="HDFS特点"><a href="#HDFS特点" class="headerlink" title="HDFS特点"></a>HDFS特点</h4><ul>
+<li>数据冗余，硬件容错</li>
+<li>流式数据访问</li>
+<li>易于存储大文件</li>
+</ul>
+<h4 id="HDFS使用"><a href="#HDFS使用" class="headerlink" title="HDFS使用"></a>HDFS使用</h4><p>配置好hadoop服务并启动后，执行 jps 命令，如看到这些服务即启动成功</p>
+<pre><code>[root@liyan ~]# jps
+14258 Jps
+5108 TaskTracker
+4887 SecondaryNameNode
+4634 NameNode
+4970 JobTracker
+4765 DataNode</code></pre><p>执行 hadoop dfsadmin -report 可以看到整个hadoop的使用情况</p>
+<pre><code>[root@liyan ~]# hadoop dfsadmin -report
+Configured Capacity: 42139451392 (39.25 GB)
+Present Capacity: 34523619328 (32.15 GB)
+DFS Remaining: 34523467776 (32.15 GB)
+DFS Used: 151552 (148 KB)
+DFS Used%: 0%
+Under replicated blocks: 8
+Blocks with corrupt replicas: 0
+Missing blocks: 0
+
+-------------------------------------------------
+Datanodes available: 1 (1 total, 0 dead)
+
+Name: 127.0.0.1:50010
+Decommission Status : Normal
+Configured Capacity: 42139451392 (39.25 GB)
+DFS Used: 151552 (148 KB)
+Non DFS Used: 7615832064 (7.09 GB)
+DFS Remaining: 34523467776(32.15 GB)
+DFS Used%: 0%
+DFS Remaining%: 81.93%
+Last contact: Sun Jan 19 18:55:45 CST 2020</code></pre><h5 id="HDFS的三个基本操作命令"><a href="#HDFS的三个基本操作命令" class="headerlink" title="HDFS的三个基本操作命令"></a>HDFS的三个基本操作命令</h5><ul>
+<li><p>从本地linux上传文件到HDFS</p>
+<pre><code>hadoop fs -put 文件  文件夹/</code></pre></li>
+<li><p>从HDFS查看文件：</p>
+<pre><code>hadoop fs -cat 文件夹/文件</code></pre></li>
+<li><p>从HDFS下载文件到本地：</p>
+<pre><code>hadoop fs -get 文件夹/文件  新文件</code></pre></li>
+</ul>
+<h3 id="MapReduce原理"><a href="#MapReduce原理" class="headerlink" title="MapReduce原理"></a>MapReduce原理</h3><p>分而治之，将大任务拆分成多个小任务（map），并行执行，合并结果（reduce）</p>
+<h4 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h4><ul>
+<li>Job&amp;Task：一个Job被拆分为多个Task</li>
+<li>JobTracker：作业调度、分配任务、监控任务执行进度、监控TaskTracker状态</li>
+</ul>
+<h4 id="体系结构"><a href="#体系结构" class="headerlink" title="体系结构"></a>体系结构</h4><p><img src="https://bucketyy.oss-cn-beijing.aliyuncs.com/image/hadoop/hadoop_reduce.jpg" alt></p>
+<h4 id="MapReduce容错机制"><a href="#MapReduce容错机制" class="headerlink" title="MapReduce容错机制"></a>MapReduce容错机制</h4><ul>
+<li>重复执行</li>
+<li>推测执行：如果之前的TaskTracker计算很慢，则推测可能出现问题，新建一台TaskTracker同时与之计算，谁先执行完成取谁结果</li>
+</ul>
+<h3 id="Hadoop应用实践"><a href="#Hadoop应用实践" class="headerlink" title="Hadoop应用实践"></a>Hadoop应用实践</h3><p>按照官网推荐的WordCount来实践一下，输入文本文件，统计里面单词的出现次数</p>
+<ol>
+<li><p>先将wordcount.jar文件上传到Linux服务器本地</p>
+<pre><code>scp wordcount.jar root@ip:/opt/examples</code></pre></li>
+<li><p>创建input文件夹，里面存放输入的文本文件</p>
+</li>
+<li><p>在HDFS里创建input_wordcount文件夹作为输入文件夹</p>
+<pre><code>hadoop fs -mkdir input_wordcount/</code></pre></li>
+<li><p>将输入文件上传到HDFS的input_wordcount文件夹，使用 hadoop fs -ls 命令查看wordcount文件夹下是否已有文件</p>
+<pre><code>[root@liyan examples]# hadoop fs -put input/* input_wordcount
+[root@liyan examples]# hadoop fs -ls input_wordcount/
+Found 2 items
+-rw-r--r--   3 root supergroup        147 2020-01-19 19:55 /user/root/input_wordcount/file1.text
+-rw-r--r--   3 root supergroup        153 2020-01-19 19:55 /user/root/input_wordcount/file2.text</code></pre></li>
+</ol>
+<p>5.执行jar文件，hadoop jar jar文件 main函数名称 输入文件夹  输出文件夹</p>
+<pre><code>[root@liyan examples]# hadoop jar wordcount.jar WordCount input_wordcount output_wordcount
+20/01/19 20:35:13 WARN mapred.JobClient: Use GenericOptionsParser for parsing the arguments. Applications should implement Tool for the same.
+20/01/19 20:35:13 INFO input.FileInputFormat: Total input paths to process : 2
+20/01/19 20:35:13 INFO util.NativeCodeLoader: Loaded the native-hadoop library
+20/01/19 20:35:13 WARN snappy.LoadSnappy: Snappy native library not loaded
+20/01/19 20:35:13 INFO mapred.JobClient: Running job: job_202001192032_0002
+20/01/19 20:35:14 INFO mapred.JobClient:  map 0% reduce 0%
+20/01/19 20:35:22 INFO mapred.JobClient:  map 50% reduce 0%
+20/01/19 20:35:32 INFO mapred.JobClient:  map 100% reduce 0%
+20/01/19 20:35:33 INFO mapred.JobClient:  map 100% reduce 33%
+20/01/19 20:35:35 INFO mapred.JobClient:  map 100% reduce 100%
+20/01/19 20:35:36 INFO mapred.JobClient: Job complete: job_202001192032_0002
+20/01/19 20:35:36 INFO mapred.JobClient: Counters: 29
+20/01/19 20:35:36 INFO mapred.JobClient:   Map-Reduce Framework
+20/01/19 20:35:36 INFO mapred.JobClient:     Spilled Records=54
+20/01/19 20:35:36 INFO mapred.JobClient:     Map output materialized bytes=331
+20/01/19 20:35:36 INFO mapred.JobClient:     Reduce input records=27
+20/01/19 20:35:36 INFO mapred.JobClient:     Virtual memory (bytes) snapshot=5852057600
+20/01/19 20:35:36 INFO mapred.JobClient:     Map input records=8
+20/01/19 20:35:36 INFO mapred.JobClient:     SPLIT_RAW_BYTES=246
+20/01/19 20:35:36 INFO mapred.JobClient:     Map output bytes=503
+20/01/19 20:35:36 INFO mapred.JobClient:     Reduce shuffle bytes=331
+20/01/19 20:35:36 INFO mapred.JobClient:     Physical memory (bytes) snapshot=411611136
+20/01/19 20:35:36 INFO mapred.JobClient:     Reduce input groups=19
+20/01/19 20:35:36 INFO mapred.JobClient:     Combine output records=27
+20/01/19 20:35:36 INFO mapred.JobClient:     Reduce output records=19
+20/01/19 20:35:36 INFO mapred.JobClient:     Map output records=51
+20/01/19 20:35:36 INFO mapred.JobClient:     Combine input records=51
+20/01/19 20:35:36 INFO mapred.JobClient:     CPU time spent (ms)=980
+20/01/19 20:35:36 INFO mapred.JobClient:     Total committed heap usage (bytes)=292954112
+20/01/19 20:35:36 INFO mapred.JobClient:   File Input Format Counters
+20/01/19 20:35:36 INFO mapred.JobClient:     Bytes Read=300
+20/01/19 20:35:36 INFO mapred.JobClient:   FileSystemCounters
+20/01/19 20:35:36 INFO mapred.JobClient:     HDFS_BYTES_READ=546
+20/01/19 20:35:36 INFO mapred.JobClient:     FILE_BYTES_WRITTEN=156082
+20/01/19 20:35:36 INFO mapred.JobClient:     FILE_BYTES_READ=325
+20/01/19 20:35:36 INFO mapred.JobClient:     HDFS_BYTES_WRITTEN=147
+20/01/19 20:35:36 INFO mapred.JobClient:   Job Counters
+20/01/19 20:35:36 INFO mapred.JobClient:     Launched map tasks=3
+20/01/19 20:35:36 INFO mapred.JobClient:     Launched reduce tasks=1
+20/01/19 20:35:36 INFO mapred.JobClient:     SLOTS_MILLIS_REDUCES=11869
+20/01/19 20:35:36 INFO mapred.JobClient:     Total time spent by all reduces waiting after reserving slots (ms)=0
+20/01/19 20:35:36 INFO mapred.JobClient:     SLOTS_MILLIS_MAPS=13320
+20/01/19 20:35:36 INFO mapred.JobClient:     Total time spent by all maps waiting after reserving slots (ms)=0
+20/01/19 20:35:36 INFO mapred.JobClient:     Data-local map tasks=3
+20/01/19 20:35:36 INFO mapred.JobClient:   File Output Format Counters
+20/01/19 20:35:36 INFO mapred.JobClient:     Bytes Written=147</code></pre><p>6.查看执行结果</p>
+<pre><code>[root@liyan examples]# hadoop fs -ls output_wordcount/
+Found 3 items
+-rw-r--r--   3 root supergroup          0 2020-01-19 20:35 /user/root/output_wordcount/_SUCCESS
+drwxr-xr-x   - root supergroup          0 2020-01-19 20:35 /user/root/output_wordcount/_logs
+-rw-r--r--   3 root supergroup        147 2020-01-19 20:35 /user/root/output_wordcount/part-r-00000</code></pre><p>  part-r-00000文件中记录了统计结果</p>
+<pre><code>[root@liyan examples]# hadoop fs -cat output_wordcount/part-r-00000
+five    2
+four    2
+hadoop    7
+help    3
+liyan    6
+love    7
+script    1
+six    1
+tacker    2
+tracker    4
+wend    5
+window    2
+word    3</code></pre>
+                <hr>
+                
+
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2020/02/10/java8特性/" data-toggle="tooltip" data-placement="top"
+                           title="java8新特性">&larr; Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/2019/11/17/proxy/" data-toggle="tooltip" data-placement="top"
+                           title="设计模式之代理模式">Next Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+
+                
+
+
+                <!--加入新的评论系统-->
+                
+                <!-- 来必力City版安装代码 -->
+                <div id="lv-container" data-id="city" data-uid="liyanpro">
+                    <script type="text/javascript">
+                        (function(d, s) {
+                            var j, e = d.getElementsByTagName(s)[0];
+
+                            if (typeof LivereTower === 'function') { return; }
+
+                            j = d.createElement(s);
+                            j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+                            j.async = true;
+
+                            e.parentNode.insertBefore(j, e);
+                        })(document, 'script');
+                    </script>
+                    <noscript> 为正常使用来必力评论功能请激活JavaScript</noscript>
+                </div>
+                <!-- City版安装代码已完成 -->
+                
+
+                
+
+            </div>
+
+            <div class="hidden-xs col-sm-3 toc-col">
+                <div class="toc-wrap">
+                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#功能与优势"><span class="toc-text">功能与优势</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#两个核心组成"><span class="toc-text">两个核心组成</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#应用"><span class="toc-text">应用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#生态"><span class="toc-text">生态</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#HDFS概念"><span class="toc-text">HDFS概念</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#HDFS数据管理与容错"><span class="toc-text">HDFS数据管理与容错</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#HDFS特点"><span class="toc-text">HDFS特点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#HDFS使用"><span class="toc-text">HDFS使用</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#HDFS的三个基本操作命令"><span class="toc-text">HDFS的三个基本操作命令</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MapReduce原理"><span class="toc-text">MapReduce原理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#概念"><span class="toc-text">概念</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#体系结构"><span class="toc-text">体系结构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#MapReduce容错机制"><span class="toc-text">MapReduce容错机制</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Hadoop应用实践"><span class="toc-text">Hadoop应用实践</span></a></li></ol>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5 class="text-center">
+                        <a href="/tags/">FEATURED TAGS</a>
+                    </h5>
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/#大数据"
+                           title="大数据">大数据</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+
+    </div>
+</article>
+
+
+
+
+
+
+
+<!-- Footer -->
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <br>
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+                    <li>
+                        <a target="_blank" href="http://weibo.com/LeeYanXJ">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/liyanpro">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://www.linkedin.com/in/岩-李-1a5955189">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; liyan 2022
+                    <br>
+                    <span id="busuanzi_container_site_pv" style="font-size: 12px;">PV: <span id="busuanzi_value_site_pv"></span> </span>
+                    <br>
+                </p>
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/blog.js"></script>
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://liyan.cloud/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- swiftype -->
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install','','2.0.0');
+</script>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<!--wechat title img-->
+<img class="wechat-title-img" src="/img/li.jpg">
+</body>
+
+</html>

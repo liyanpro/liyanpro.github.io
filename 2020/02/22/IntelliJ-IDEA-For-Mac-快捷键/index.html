@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="李岩的博客">
+    <meta name="keyword" content="李岩，博客，liyan,liyanpro">
+    <meta name="theme-color" content="#600090">
+    <meta name="msapplication-navbutton-color" content="#600090">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#600090">
+    <link rel="shortcut icon" href="/img/bea.ico">
+    <link rel="alternate" type="application/atom+xml" title="liyan" href="/atom.xml">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
+    <title>
+        
+        IntelliJ IDEA For Mac 快捷键｜Liyan‘s blog
+        
+    </title>
+
+    <link rel="canonical" href="https://liyan.cloud/2020/02/22/IntelliJ-IDEA-For-Mac-快捷键/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/blog-style.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+</head>
+
+<style>
+
+    header.intro-header {
+        background-image: url('')
+    }
+</style>
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="" class="animated fadeIn">
+<!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top " id="nav-top" data-ispost = "true" data-istags="false
+" data-ishome = "false" >
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand animated pulse" href="/">
+                <span class="brand-logo">
+                    liyan
+                </span>
+                's Blog
+            </a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <!-- /.navbar-collapse -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+					
+                    
+                        
+							
+                        <li>
+                            <a href="/tags/">tags</a>
+                        </li>
+							
+						
+                    
+					
+					
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+//    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+<!-- Main Content -->
+
+<!--only post-->
+
+
+<img class="wechat-title-img"
+     src="/img/post-bg.jpg">
+
+
+<style>
+    
+    header.intro-header {
+        background-image: url('/img/post-bg.jpg')
+    }
+
+    
+</style>
+
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <div class="post-heading">
+                    <h1>IntelliJ IDEA For Mac 快捷键</h1>
+                    
+                    <span class="meta">
+                         作者 李岩
+                        <span>
+                          日期 2020-02-22
+                         </span>
+                    </span>
+                    <div class="tags text-center">
+                        
+                        <a class="tag" href="/tags/#快捷键"
+                           title="快捷键">快捷键</a>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="post-title-haojen">
+        <span>
+            IntelliJ IDEA For Mac 快捷键
+        </span>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Container -->
+            <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
+                <h3 id="Mac键盘符号和修饰键说明"><a href="#Mac键盘符号和修饰键说明" class="headerlink" title="Mac键盘符号和修饰键说明"></a>Mac键盘符号和修饰键说明</h3><pre><code>⌘ Command 
+⇧ Shift
+⌥ Option
+⌃ Control
+↩︎ Return/Enter
+⌫ Delete
+⌦ 向前删除键（Fn+Delete）
+↑ 上箭头
+↓ 下箭头
+← 左箭头
+→ 右箭头
+⇞ Page Up（Fn+↑）
+⇟ Page Down（Fn+↓）
+Home Fn + ←
+End Fn + →
+⇥ 右制表符（Tab键）
+⇤ 左制表符（Shift+Tab）
+⎋ Escape (Esc)</code></pre><h3 id="一、Editing（编辑）"><a href="#一、Editing（编辑）" class="headerlink" title="一、Editing（编辑）"></a>一、Editing（编辑）</h3><pre><code>⌃Space 基本的代码补全（补全任何类、方法、变量）
+⌃⇧Space 智能代码补全（过滤器方法列表和变量的预期类型）
+⌘⇧↩ 自动结束代码，行末自动添加分号
+⌘P 显示方法的参数信息
+⌃J, Mid. button click 快速查看文档
+⇧F1 查看外部文档（在某些代码上会触发打开浏览器显示相关文档）
+⌘+鼠标放在代码上 显示代码简要信息
+⌘F1 在错误或警告处显示具体描述信息
+⌘N, ⌃↩, ⌃N 生成代码（getter、setter、构造函数、hashCode/equals,toString）
+⌃O 覆盖方法（重写父类方法）
+⌃I 实现方法（实现接口中的方法）
+⌘⌥T 包围代码（使用if..else, try..catch, for, synchronized等包围选中的代码）
+⌘/ 注释/取消注释与行注释
+⌘⌥/ 注释/取消注释与块注释
+⌥↑ 连续选中代码块
+⌥↓ 减少当前选中的代码块
+⌃⇧Q 显示上下文信息
+⌥↩ 显示意向动作和快速修复代码
+⌘⌥L 格式化代码
+⌃⌥O 优化import
+⌃⌥I 自动缩进线
+⇥ / ⇧⇥ 缩进代码 / 反缩进代码
+⌘X 剪切当前行或选定的块到剪贴板
+⌘C 复制当前行或选定的块到剪贴板
+⌘V 从剪贴板粘贴
+⌘⇧V 从最近的缓冲区粘贴
+⌘D 复制当前行或选定的块
+⌘⌫ 删除当前行或选定的块的行
+⌃⇧J 智能的将代码拼接成一行
+⌘↩ 智能的拆分拼接的行
+⇧↩ 开始新的一行
+⌘⇧U 大小写切换
+⌘⇧] / ⌘⇧[ 选择直到代码块结束/开始
+⌥⌦ 删除到单词的末尾（⌦键为Fn+Delete）
+⌥⌫ 删除到单词的开头
+⌘+ / ⌘- 展开 / 折叠代码块
+⌘⇧+ 展开所以代码块
+⌘⇧- 折叠所有代码块
+⌘W 关闭活动的编辑器选项卡</code></pre><h3 id="二、Search-Replace（查询-替换）"><a href="#二、Search-Replace（查询-替换）" class="headerlink" title="二、Search/Replace（查询/替换）"></a>二、Search/Replace（查询/替换）</h3><pre><code>Double ⇧ 查询任何东西
+⌘F 文件内查找
+⌘G 查找模式下，向下查找
+⌘⇧G 查找模式下，向上查找
+⌘R 文件内替换
+⌘⇧F 全局查找（根据路径）
+⌘⇧R 全局替换（根据路径）
+⌘⇧S 查询结构（Ultimate Edition 版专用，需要在Keymap中设置）
+⌘⇧M 替换结构（Ultimate Edition 版专用，需要在Keymap中设置）</code></pre><h3 id="三、Usage-Search（使用查询）"><a href="#三、Usage-Search（使用查询）" class="headerlink" title="三、Usage Search（使用查询）"></a>三、Usage Search（使用查询）</h3><pre><code>⌥F7 / ⌘F7 在文件中查找用法 / 在类中查找用法
+⌘⇧F7 在文件中突出显示的用法
+⌘⌥F7 显示用法
+⌘⇧I 查看定义的类,快速查看</code></pre><h3 id="四、Compile-and-Run（编译和运行）"><a href="#四、Compile-and-Run（编译和运行）" class="headerlink" title="四、Compile and Run（编译和运行）"></a>四、Compile and Run（编译和运行）</h3><pre><code>⌘F9 编译Project
+⌘⇧F9 编译选择的文件、包或模块
+⌃⌥R 弹出 Run 的可选择菜单
+⌃⌥D 弹出 Debug 的可选择菜单
+⌃R 运行
+⌃D 调试
+⌃⇧R, ⌃⇧D 从编辑器运行上下文环境配置</code></pre><h3 id="五、Debugging（调试）"><a href="#五、Debugging（调试）" class="headerlink" title="五、Debugging（调试）"></a>五、Debugging（调试）</h3><pre><code>F8 进入下一步，如果当前行断点是一个方法，则不进入当前方法体内
+F7 进入下一步，如果当前行断点是一个方法，则进入当前方法体内，如果该方法体还有方法，则不会进入该内嵌的方法中
+⇧F7 智能步入，断点所在行上有多个方法调用，会弹出进入哪个方法
+⇧F8 跳出
+⌥F9 运行到光标处，如果光标前有其他断点会进入到该断点
+⌥F8 计算表达式（可以更改变量值使其生效）
+⌘⌥R 恢复程序运行，如果该断点下面代码还有断点则停在下一个断点上
+⌘F8 切换断点（若光标当前行有断点则取消断点，没有则加上断点）
+⌘⇧F8 查看断点信息</code></pre><h3 id="六、Navigation（导航）"><a href="#六、Navigation（导航）" class="headerlink" title="六、Navigation（导航）"></a>六、Navigation（导航）</h3><pre><code>⌘O 查找类文件
+⌘⇧O 查找所有类型文件、打开文件、打开目录，打开目录需要在输入的内容前面或后面加一个反斜杠/
+⌘⌥O 前往指定的变量 / 方法
+⌃← / ⌃→ 左右切换打开的编辑tab页
+F12 返回到前一个工具窗口
+⎋ 从工具窗口进入代码文件窗口
+⇧⎋ 隐藏当前或最后一个活动的窗口，且光标进入代码文件窗口
+⌘⇧F4 关闭活动run/messages/find/… tab
+⌘L 在当前文件跳转到某一行的指定处
+⌘E 显示最近打开的文件记录列表
+⌘⌥← / ⌘⌥→ 退回 / 前进到上一个操作的地方
+⌘⇧⌫ 跳转到最后一个编辑的地方
+⌥F1 显示当前文件选择目标弹出层，弹出层中有很多目标可以进行选择(如在代码编辑窗口可以选择显示该文件的Finder)
+⌘B / ⌘ 鼠标点击 进入光标所在的方法/变量的接口或是定义处
+⌘⌥B 跳转到实现处，在某个调用的方法名上使用会跳到具体的实现处，可以跳过接口
+⌥ Space, ⌘Y 快速打开光标所在方法、类的定义
+⌃⇧B 跳转到类型声明处
+⌘U 前往当前光标所在方法的父类的方法 / 接口定义
+⌃↓ / ⌃↑ 当前光标跳转到当前文件的前一个/后一个方法名位置
+⌘] / ⌘[ 移动光标到当前所在代码的花括号开始/结束位置
+⌘F12 弹出当前文件结构层，可以在弹出的层上直接输入进行筛选（可用于搜索类中的方法）
+⌃H 显示当前类的层次结构
+⌘⇧H 显示方法层次结构
+⌃⌥H 显示调用层次结构
+F2 / ⇧F2 跳转到下一个/上一个突出错误或警告的位置
+F4 / ⌘↓ 编辑/查看代码源
+⌥ Home 显示到当前文件的导航条
+F3选中文件/文件夹/代码行，添加/取消书签
+⌥F3 选中文件/文件夹/代码行，使用助记符添加/取消书签
+⌃0...⌃9 定位到对应数值的书签位置
+⌘F3 显示所有书签</code></pre><h3 id="七、Refactoring（重构）"><a href="#七、Refactoring（重构）" class="headerlink" title="七、Refactoring（重构）"></a>七、Refactoring（重构）</h3><pre><code>F5 复制文件到指定目录
+F6 移动文件到指定目录
+⌘⌫ 在文件上为安全删除文件，弹出确认框
+⇧F6 重命名文件
+⌘F6 更改签名
+⌘⌥N 一致性
+⌘⌥M 将选中的代码提取为方法
+⌘⌥V 提取变量
+⌘⌥F 提取字段
+⌘⌥C 提取常量
+⌘⌥P 提取参数</code></pre><h3 id="八、VCS-Local-History（版本控制-本地历史记录）"><a href="#八、VCS-Local-History（版本控制-本地历史记录）" class="headerlink" title="八、VCS/Local History（版本控制/本地历史记录）"></a>八、VCS/Local History（版本控制/本地历史记录）</h3><pre><code>⌘K 提交代码到版本控制器
+⌘T 从版本控制器更新代码
+⌥⇧C 查看最近的变更记录
+⌃C 快速弹出版本控制器操作面板</code></pre><h3 id="九、Live-Templates（动态代码模板）"><a href="#九、Live-Templates（动态代码模板）" class="headerlink" title="九、Live Templates（动态代码模板）"></a>九、Live Templates（动态代码模板）</h3><pre><code>⌘⌥J 弹出模板选择窗口，将选定的代码使用动态模板包住
+⌘J 插入自定义动态代码模板</code></pre><h3 id="十、General（通用）"><a href="#十、General（通用）" class="headerlink" title="十、General（通用）"></a>十、General（通用）</h3><pre><code>⌘1...⌘9 打开相应编号的工具窗口
+⌘S 保存所有
+⌘⌥Y 同步、刷新
+⌃⌘F 切换全屏模式
+⌘⇧F12 切换最大化编辑器
+⌥⇧F 添加到收藏夹
+⌥⇧I 检查当前文件与当前的配置文件
+§⌃, ⌃` 快速切换当前的scheme（切换主题、代码样式等）
+⌘, 打开IDEA系统设置
+⌘; 打开项目结构对话框
+⇧⌘A 查找动作（可设置相关选项）
+⌃⇥ 编辑窗口标签和工具窗口之间切换（如果在切换的过程加按上delete，则是关闭对应选中的窗口）</code></pre>
+                <hr>
+                
+
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2020/03/07/Redis数据结构及内存占比分析/" data-toggle="tooltip" data-placement="top"
+                           title="Redis数据结构及内存占比分析">&larr; Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/2020/02/10/java8特性/" data-toggle="tooltip" data-placement="top"
+                           title="java8新特性">Next Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+
+                
+
+
+                <!--加入新的评论系统-->
+                
+                <!-- 来必力City版安装代码 -->
+                <div id="lv-container" data-id="city" data-uid="liyanpro">
+                    <script type="text/javascript">
+                        (function(d, s) {
+                            var j, e = d.getElementsByTagName(s)[0];
+
+                            if (typeof LivereTower === 'function') { return; }
+
+                            j = d.createElement(s);
+                            j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+                            j.async = true;
+
+                            e.parentNode.insertBefore(j, e);
+                        })(document, 'script');
+                    </script>
+                    <noscript> 为正常使用来必力评论功能请激活JavaScript</noscript>
+                </div>
+                <!-- City版安装代码已完成 -->
+                
+
+                
+
+            </div>
+
+            <div class="hidden-xs col-sm-3 toc-col">
+                <div class="toc-wrap">
+                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Mac键盘符号和修饰键说明"><span class="toc-text">Mac键盘符号和修饰键说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#一、Editing（编辑）"><span class="toc-text">一、Editing（编辑）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、Search-Replace（查询-替换）"><span class="toc-text">二、Search/Replace（查询/替换）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、Usage-Search（使用查询）"><span class="toc-text">三、Usage Search（使用查询）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#四、Compile-and-Run（编译和运行）"><span class="toc-text">四、Compile and Run（编译和运行）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#五、Debugging（调试）"><span class="toc-text">五、Debugging（调试）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#六、Navigation（导航）"><span class="toc-text">六、Navigation（导航）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#七、Refactoring（重构）"><span class="toc-text">七、Refactoring（重构）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#八、VCS-Local-History（版本控制-本地历史记录）"><span class="toc-text">八、VCS/Local History（版本控制/本地历史记录）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#九、Live-Templates（动态代码模板）"><span class="toc-text">九、Live Templates（动态代码模板）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#十、General（通用）"><span class="toc-text">十、General（通用）</span></a></li></ol>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5 class="text-center">
+                        <a href="/tags/">FEATURED TAGS</a>
+                    </h5>
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/#快捷键"
+                           title="快捷键">快捷键</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+
+    </div>
+</article>
+
+
+
+
+
+
+
+<!-- Footer -->
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <br>
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+                    <li>
+                        <a target="_blank" href="http://weibo.com/LeeYanXJ">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/liyanpro">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://www.linkedin.com/in/岩-李-1a5955189">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; liyan 2022
+                    <br>
+                    <span id="busuanzi_container_site_pv" style="font-size: 12px;">PV: <span id="busuanzi_value_site_pv"></span> </span>
+                    <br>
+                </p>
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/blog.js"></script>
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://liyan.cloud/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- swiftype -->
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install','','2.0.0');
+</script>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<!--wechat title img-->
+<img class="wechat-title-img" src="/img/li.jpg">
+</body>
+
+</html>

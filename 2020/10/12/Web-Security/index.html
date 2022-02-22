@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="李岩的博客">
+    <meta name="keyword" content="李岩，博客，liyan,liyanpro">
+    <meta name="theme-color" content="#600090">
+    <meta name="msapplication-navbutton-color" content="#600090">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#600090">
+    <link rel="shortcut icon" href="/img/bea.ico">
+    <link rel="alternate" type="application/atom+xml" title="liyan" href="/atom.xml">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
+    <title>
+        
+        Web Security ｜Liyan‘s blog
+        
+    </title>
+
+    <link rel="canonical" href="https://liyan.cloud/2020/10/12/Web-Security/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/blog-style.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+</head>
+
+<style>
+
+    header.intro-header {
+        background-image: url('')
+    }
+</style>
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="" class="animated fadeIn">
+<!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top " id="nav-top" data-ispost = "true" data-istags="false
+" data-ishome = "false" >
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand animated pulse" href="/">
+                <span class="brand-logo">
+                    liyan
+                </span>
+                's Blog
+            </a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <!-- /.navbar-collapse -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+					
+                    
+                        
+							
+                        <li>
+                            <a href="/tags/">tags</a>
+                        </li>
+							
+						
+                    
+					
+					
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+//    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+<!-- Main Content -->
+
+<!--only post-->
+
+
+<img class="wechat-title-img"
+     src="/img/post-bg.jpg">
+
+
+<style>
+    
+    header.intro-header {
+        background-image: url('/img/post-bg.jpg')
+    }
+
+    
+</style>
+
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <div class="post-heading">
+                    <h1>Web Security </h1>
+                    
+                    <span class="meta">
+                         作者 李岩
+                        <span>
+                          日期 2020-10-12
+                         </span>
+                    </span>
+                    <div class="tags text-center">
+                        
+                        <a class="tag" href="/tags/#网络"
+                           title="网络">网络</a>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="post-title-haojen">
+        <span>
+            Web Security 
+        </span>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Container -->
+            <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
+                <h3 id="1-DHCP协议"><a href="#1-DHCP协议" class="headerlink" title="1. DHCP协议"></a>1. DHCP协议</h3><p>动态主机配置协议（Dynamic Host Configuration Protocol,DHCP）是一个用于局域网的网络通讯协议，位于OSI模型的应用层，使用UDP协议工作，主要用于自动分配地址给用户，方便管理员进行统一管理。<br>报文格式如下：<br><img src="https://bucketyy.oss-cn-beijing.aliyuncs.com/image/security/DHCP.jpg" alt></p>
+<h3 id="2-路由算法"><a href="#2-路由算法" class="headerlink" title="2.路由算法"></a>2.路由算法</h3><p>  在因特网中，路由协议可以分为内部网关协议IGP和外部网关协议EGP</p>
+<h3 id="3-域名系统"><a href="#3-域名系统" class="headerlink" title="3.域名系统"></a>3.域名系统</h3><p>  DNS是一个简单的请求-响应协议，是将域名和ip地址相互映射的一个分布式数据库，能够使人更方便的访问互联网，DNS使用TCP和UDP协议的53端口<br>域名系统工作原理</p>
+<p>  <strong>DNS解析过程是递归查询的，具体过程如下：</strong></p>
+<ul>
+<li>用户要访问域名<a href="http://www.example.com时，先查看本机hosts是否有记录或者本机是否有DNS缓存，如果有，直接返回结果，否则向递归服务器查询该域名的IP地址" target="_blank" rel="noopener">www.example.com时，先查看本机hosts是否有记录或者本机是否有DNS缓存，如果有，直接返回结果，否则向递归服务器查询该域名的IP地址</a></li>
+<li>递归缓存为空时，首先向根服务器查询com顶级域的IP地址</li>
+<li>根服务器告知递归服务器com顶级域名服务器的IP地址</li>
+<li>递归向com顶级域名服务器查询负责example.com的权威服务器的IP</li>
+<li>com顶级域名服务器返回相应的IP地址</li>
+<li>递归向example.com的权威服务器查询<a href="http://www.example.com的地址记录" target="_blank" rel="noopener">www.example.com的地址记录</a></li>
+<li>权威服务器告知<a href="http://www.example.com的地址记录" target="_blank" rel="noopener">www.example.com的地址记录</a></li>
+<li>递归服务器将查询结果返回客户端</li>
+</ul>
+<h3 id="4-搜索引擎利用"><a href="#4-搜索引擎利用" class="headerlink" title="4.搜索引擎利用"></a>4.搜索引擎利用</h3><ul>
+<li><p>site:<a href="http://www.hao123.com" target="_blank" rel="noopener">www.hao123.com</a></p>
+<p>返回此目标站点被搜索引擎抓取收录的所有内容</p>
+</li>
+<li><p>site:<a href="http://www.hao123.com" target="_blank" rel="noopener">www.hao123.com</a> keyword</p>
+<p>返回此目标站点被搜索引擎抓取收录的包含此关键词的所有页面</p>
+<p>此处可以将关键词设定为网站后台，管理后台，密码修改，密码找回等</p>
+</li>
+<li><p>site:<a href="http://www.hao123.com" target="_blank" rel="noopener">www.hao123.com</a> inurl:admin.php</p>
+<p>返回目标站点的地址中包含admin.php的所有页面，可以使用admin.php/manage.php或者其他关键词来寻找关键功能页面</p>
+</li>
+<li><p>link:<a href="http://www.hao123.com" target="_blank" rel="noopener">www.hao123.com</a></p>
+<p>返回所有包含目标站点链接的页面，其中包括其开发人员的个人博客，开发日志，或者开放这个站点的第三方公司，合作伙伴等</p>
+</li>
+<li><p>related:<a href="http://www.hao123.com" target="_blank" rel="noopener">www.hao123.com</a></p>
+<p>返回所有与目标站点”相似”的页面，可能会包含一些通用程序的信息等</p>
+</li>
+<li><p>intitle:”500 Internal Server Error” “server at”</p>
+<p>搜索出错的页面</p>
+</li>
+<li><p>inurl:”nph-proxy.cgi” “Start browsing”</p>
+</li>
+</ul>
+<h2 id="运营商网络架构"><a href="#运营商网络架构" class="headerlink" title="运营商网络架构"></a>运营商网络架构</h2><h3 id="链路层"><a href="#链路层" class="headerlink" title="链路层"></a>链路层</h3><ol>
+<li>LAN:以太网、802.3</li>
+<li>WAN: HDLC/PPP</li>
+</ol>
+<h3 id="网络层"><a href="#网络层" class="headerlink" title="网络层"></a>网络层</h3><ol>
+<li>是否对传输数据具有绝对寻址能力</li>
+<li>局域网私有ip</li>
+<li>广域网公有ip</li>
+</ol>
+<h3 id="运营商网络总体架构"><a href="#运营商网络总体架构" class="headerlink" title="运营商网络总体架构"></a>运营商网络总体架构</h3><p><img src="https://bucketyy.oss-cn-beijing.aliyuncs.com/image/security/operator.png" alt></p>
+<h3 id="运营商接入网"><a href="#运营商接入网" class="headerlink" title="运营商接入网"></a>运营商接入网</h3><p>  宽带端到端是用户终端至各网站服务器的连接，目前主流接入方式包括ADSL、LAN、PON三种</p>
+<h3 id="DCN与网游加速器"><a href="#DCN与网游加速器" class="headerlink" title="DCN与网游加速器"></a>DCN与网游加速器</h3>
+                <hr>
+                
+
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2021/02/01/docker命令/" data-toggle="tooltip" data-placement="top"
+                           title="docker命令">&larr; Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/2020/10/12/工程师的基本功是什么？该如何练习？/" data-toggle="tooltip" data-placement="top"
+                           title="工程师的基本功是什么？该如何练习？">Next Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+
+                
+
+
+                <!--加入新的评论系统-->
+                
+                <!-- 来必力City版安装代码 -->
+                <div id="lv-container" data-id="city" data-uid="liyanpro">
+                    <script type="text/javascript">
+                        (function(d, s) {
+                            var j, e = d.getElementsByTagName(s)[0];
+
+                            if (typeof LivereTower === 'function') { return; }
+
+                            j = d.createElement(s);
+                            j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+                            j.async = true;
+
+                            e.parentNode.insertBefore(j, e);
+                        })(document, 'script');
+                    </script>
+                    <noscript> 为正常使用来必力评论功能请激活JavaScript</noscript>
+                </div>
+                <!-- City版安装代码已完成 -->
+                
+
+                
+
+            </div>
+
+            <div class="hidden-xs col-sm-3 toc-col">
+                <div class="toc-wrap">
+                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-DHCP协议"><span class="toc-text">1. DHCP协议</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-路由算法"><span class="toc-text">2.路由算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-域名系统"><span class="toc-text">3.域名系统</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-搜索引擎利用"><span class="toc-text">4.搜索引擎利用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#运营商网络架构"><span class="toc-text">运营商网络架构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#链路层"><span class="toc-text">链路层</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#网络层"><span class="toc-text">网络层</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#运营商网络总体架构"><span class="toc-text">运营商网络总体架构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#运营商接入网"><span class="toc-text">运营商接入网</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DCN与网游加速器"><span class="toc-text">DCN与网游加速器</span></a></li></ol>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5 class="text-center">
+                        <a href="/tags/">FEATURED TAGS</a>
+                    </h5>
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/#网络"
+                           title="网络">网络</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+
+    </div>
+</article>
+
+
+
+
+
+
+
+<!-- Footer -->
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <br>
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+                    <li>
+                        <a target="_blank" href="http://weibo.com/LeeYanXJ">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/liyanpro">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://www.linkedin.com/in/岩-李-1a5955189">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; liyan 2022
+                    <br>
+                    <span id="busuanzi_container_site_pv" style="font-size: 12px;">PV: <span id="busuanzi_value_site_pv"></span> </span>
+                    <br>
+                </p>
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/blog.js"></script>
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://liyan.cloud/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- swiftype -->
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install','','2.0.0');
+</script>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<!--wechat title img-->
+<img class="wechat-title-img" src="/img/li.jpg">
+</body>
+
+</html>
